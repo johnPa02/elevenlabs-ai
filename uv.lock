@@ -188,7 +188,7 @@ wheels = [
 
 [[package]]
 name = "elevenlabs"
-version = "2.11.0"
+version = "2.13.0"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "httpx" },
@@ -198,14 +198,9 @@ dependencies = [
     { name = "typing-extensions" },
     { name = "websockets" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/d1/ed/429e638e4f545f86b63d86fcd954190196b3641ef202425e2c9be0163edc/elevenlabs-2.11.0.tar.gz", hash = "sha256:ddad47450f14eb5097d6654e2b2738d7100c57779a225720a6449a3299f31fee", size = 288726, upload-time = "2025-08-20T15:06:46.082Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/69/13/55402b275dc8265004d324869e93f81f660e223ee071af6a101ebbca76ac/elevenlabs-2.13.0.tar.gz", hash = "sha256:1d7df140ac5ee8b94e5e213e6d322bec4b88470efb320d754d8f03d124111ab3", size = 302391, upload-time = "2025-08-29T10:35:58.396Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/2d/76/6fef1fa2dd72e3369a3692b34173852abf273b4a5a2daf9e0cf30d5417b1/elevenlabs-2.11.0-py3-none-any.whl", hash = "sha256:90b3d9098f15f293de86ecaaacf03a492fcd4fe8ba33eda18e3c3556741e7bde", size = 823717, upload-time = "2025-08-20T15:06:44.275Z" },
-]
-
-[package.optional-dependencies]
-pyaudio = [
-    { name = "pyaudio" },
+    { url = "https://files.pythonhosted.org/packages/d3/2e/b22579723dbeb55bb9731329f17b1dd2ede97bda061938ae8de6d31f5376/elevenlabs-2.13.0-py3-none-any.whl", hash = "sha256:e98e9e50516966fa2dce8a6a88320ca0f749ffdfb77fec24e679308518aa6752", size = 858682, upload-time = "2025-08-29T10:35:56.8Z" },
 ]
 
 [[package]]
@@ -213,7 +208,7 @@ name = "elevenlabs-ai"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
-    { name = "elevenlabs", extra = ["pyaudio"] },
+    { name = "elevenlabs" },
     { name = "fastapi", extra = ["standard"] },
     { name = "python-dotenv" },
     { name = "sounddevice" },
@@ -222,7 +217,7 @@ dependencies = [
 
 [package.metadata]
 requires-dist = [
-    { name = "elevenlabs", extras = ["pyaudio"], specifier = ">=2.11.0" },
+    { name = "elevenlabs", specifier = ">=2.13.0" },
     { name = "fastapi", extras = ["standard"], specifier = ">=0.111.0" },
     { name = "python-dotenv", specifier = ">=1.1.1" },
     { name = "sounddevice", specifier = ">=0.5.2" },
@@ -487,22 +482,6 @@ source = { registry = "https://pypi.org/simple" }
 sdist = { url = "https://files.pythonhosted.org/packages/d6/54/cfe61301667036ec958cb99bd3efefba235e65cdeb9c84d24a8293ba1d90/mdurl-0.1.2.tar.gz", hash = "sha256:bb413d29f5eea38f31dd4754dd7377d4465116fb207585f97bf925588687c1ba", size = 8729, upload-time = "2022-08-14T12:40:10.846Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/b3/38/89ba8ad64ae25be8de66a6d463314cf1eb366222074cfda9ee839c56a4b4/mdurl-0.1.2-py3-none-any.whl", hash = "sha256:84008a41e51615a49fc9966191ff91509e3c40b939176e643fd50a5c2196b8f8", size = 9979, upload-time = "2022-08-14T12:40:09.779Z" },
-]
-
-[[package]]
-name = "pyaudio"
-version = "0.2.14"
-source = { registry = "https://pypi.org/simple" }
-sdist = { url = "https://files.pythonhosted.org/packages/26/1d/8878c7752febb0f6716a7e1a52cb92ac98871c5aa522cba181878091607c/PyAudio-0.2.14.tar.gz", hash = "sha256:78dfff3879b4994d1f4fc6485646a57755c6ee3c19647a491f790a0895bd2f87", size = 47066, upload-time = "2023-11-07T07:11:48.806Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/90/90/1553487277e6aa25c0b7c2c38709cdd2b49e11c66c0b25c6e8b7b6638c72/PyAudio-0.2.14-cp310-cp310-win32.whl", hash = "sha256:126065b5e82a1c03ba16e7c0404d8f54e17368836e7d2d92427358ad44fefe61", size = 144624, upload-time = "2023-11-07T07:11:33.599Z" },
-    { url = "https://files.pythonhosted.org/packages/27/bc/719d140ee63cf4b0725016531d36743a797ffdbab85e8536922902c9349a/PyAudio-0.2.14-cp310-cp310-win_amd64.whl", hash = "sha256:2a166fc88d435a2779810dd2678354adc33499e9d4d7f937f28b20cc55893e83", size = 164069, upload-time = "2023-11-07T07:11:35.439Z" },
-    { url = "https://files.pythonhosted.org/packages/7b/f0/b0eab89eafa70a86b7b566a4df2f94c7880a2d483aa8de1c77d335335b5b/PyAudio-0.2.14-cp311-cp311-win32.whl", hash = "sha256:506b32a595f8693811682ab4b127602d404df7dfc453b499c91a80d0f7bad289", size = 144624, upload-time = "2023-11-07T07:11:36.94Z" },
-    { url = "https://files.pythonhosted.org/packages/82/d8/f043c854aad450a76e476b0cf9cda1956419e1dacf1062eb9df3c0055abe/PyAudio-0.2.14-cp311-cp311-win_amd64.whl", hash = "sha256:bbeb01d36a2f472ae5ee5e1451cacc42112986abe622f735bb870a5db77cf903", size = 164070, upload-time = "2023-11-07T07:11:38.579Z" },
-    { url = "https://files.pythonhosted.org/packages/8d/45/8d2b76e8f6db783f9326c1305f3f816d4a12c8eda5edc6a2e1d03c097c3b/PyAudio-0.2.14-cp312-cp312-win32.whl", hash = "sha256:5fce4bcdd2e0e8c063d835dbe2860dac46437506af509353c7f8114d4bacbd5b", size = 144750, upload-time = "2023-11-07T07:11:40.142Z" },
-    { url = "https://files.pythonhosted.org/packages/b0/6a/d25812e5f79f06285767ec607b39149d02aa3b31d50c2269768f48768930/PyAudio-0.2.14-cp312-cp312-win_amd64.whl", hash = "sha256:12f2f1ba04e06ff95d80700a78967897a489c05e093e3bffa05a84ed9c0a7fa3", size = 164126, upload-time = "2023-11-07T07:11:41.539Z" },
-    { url = "https://files.pythonhosted.org/packages/3a/77/66cd37111a87c1589b63524f3d3c848011d21ca97828422c7fde7665ff0d/PyAudio-0.2.14-cp313-cp313-win32.whl", hash = "sha256:95328285b4dab57ea8c52a4a996cb52be6d629353315be5bfda403d15932a497", size = 150982, upload-time = "2024-11-20T19:12:12.404Z" },
-    { url = "https://files.pythonhosted.org/packages/a5/8b/7f9a061c1cc2b230f9ac02a6003fcd14c85ce1828013aecbaf45aa988d20/PyAudio-0.2.14-cp313-cp313-win_amd64.whl", hash = "sha256:692d8c1446f52ed2662120bcd9ddcb5aa2b71f38bda31e58b19fb4672fffba69", size = 173655, upload-time = "2024-11-20T19:12:13.616Z" },
 ]
 
 [[package]]
