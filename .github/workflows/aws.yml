@@ -27,18 +27,17 @@ jobs:
         port: 22
         script: |
           cd /home/ubuntu || exit 1
-          if [ ! -d "${PROJECT_NAME}/.git" ]; then
+          if [ ! -d "elevenlabs-ai/.git" ]; then
             echo "📥 Cloning repository..."
-            rm -rf ${PROJECT_NAME}
-            git clone https://github.com/johnPa02/elevenlabs-ai.git ${PROJECT_NAME}
+            rm -rf elevenlabs-ai
+            git clone https://github.com/johnPa02/elevenlabs-ai.git elevenlabs-ai
           fi
 
-          cd ${PROJECT_NAME}
+          cd elevenlabs-ai
           git fetch origin
           git checkout main
           git pull origin main
 
-          mkdir -p deploy
           echo "${{ secrets.ENV_FILE }}" > deploy/.env
 
           docker compose -f deploy/docker-compose.yml down || true
