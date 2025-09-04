@@ -1,5 +1,6 @@
 services:
   api:
+    build: .
     image: elevenlabs-ai:prod
     container_name: elevenlabs-ai-api
     ports:
