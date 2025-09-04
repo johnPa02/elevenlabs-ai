@@ -57,3 +57,20 @@ curl -X POST http://localhost:8000/tools/confirm-identity \
 - `src/client/` → ElevenLabs client modules (agents, tools, phone numbers, pronunciation)
 - `src/utils/` → Utilities such as prompt loading
 - `src/prompts/` → Prompt templates
+
+### Docker
+
+Build and run with Docker:
+
+```
+docker build -t elevenlabs-ai .
+docker run --rm -p 8000:8000 --env-file .env elevenlabs-ai
+```
+
+Using Docker Compose:
+
+```
+docker compose up --build
+```
+
+The API will be available at `http://localhost:8000` (health at `/health`).
