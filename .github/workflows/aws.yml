@@ -33,16 +33,16 @@ jobs:
         ls -lh deploy
 
     - name: Copy artifacts to EC2
-      uses: appleboy/scp-action@v0.1.5
+      uses: appleboy/rsync-action@v0.2.0
       with:
         host: ${{ secrets.EC2_HOST }}
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
-        source: "image.tar deploy"
+        source: "image.tar deploy/"
         target: "/home/ubuntu/${{ env.PROJECT_NAME }}/"
-        overwrite: true
         debug: true
+
 
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
