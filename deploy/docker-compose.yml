@@ -1,6 +1,8 @@
 services:
   api:
-    build: .
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
     image: elevenlabs-ai:prod
     container_name: elevenlabs-ai-api
     ports:
