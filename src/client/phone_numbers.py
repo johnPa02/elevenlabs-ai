@@ -60,20 +60,15 @@ def outbound_call(
     return r.json()
 
 if __name__ == "__main__":
-    # Example usage driven by environment variables instead of hardcoded secrets
-    # Set: TWILIO_SID, TWILIO_TOKEN, TWILIO_LABEL, TWILIO_PHONE_NUMBER, PHONE_NUMBER_ID, TO_NUMBER
-    import os
-
-    phone_number = os.getenv("TWILIO_PHONE_NUMBER")
-    label = os.getenv("TWILIO_LABEL")
-    sid = os.getenv("TWILIO_SID")
-    token = os.getenv("TWILIO_TOKEN")
+    phone_number = "+16592349090"
+    label = "Thuy Kieu"
+    sid = config.twilio_sid
+    token = config.twilio_token
+    phone_number_id = config.phone_number_id
+    to_number = config.to_phone_number
     agent_id = config.agent_id
-
-    phone_number_id = os.getenv("PHONE_NUMBER_ID")
-    to_number = os.getenv("TO_NUMBER")
 
     # Uncomment to create/update/outbound based on your env
     # print(create_twilio_phone_number(phone_number, label, sid, token))
     # print(update_phone_number(phone_number_id, agent_id))
-    # print(outbound_call(agent_id=agent_id, agent_phone_number_id=phone_number_id, to_number=to_number))
+    print(outbound_call(agent_id=agent_id, agent_phone_number_id=phone_number_id, to_number=to_number))

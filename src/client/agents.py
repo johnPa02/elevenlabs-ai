@@ -102,7 +102,7 @@ def update_agent(agent_id, first_message, system_prompt, voice_id):
                 "prompt": {
                     "prompt": system_prompt,
                     "llm": "gpt-4o",
-                    "tool_ids": ["tool_5901k3qsqh9dfefr1fkk5r5y0rt6"]
+                    "tool_ids": ["tool_0701k4a6h312fk380tdrq8t97r0f"]
                 },
             }
         },

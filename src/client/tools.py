@@ -9,74 +9,65 @@ headers = {
 
 def create_tool(name, description, url):
     payload = {
-        "tool_config": {
-          "type": "webhook",
-          "name": name,
-          "description": description,
-          "api_schema": {
-            "url": url,
-            "method": "POST",
-            "path_params_schema": [],
-            "query_params_schema": [],
-            "request_body_schema": {
-              "id": "body",
-              "type": "object",
-              "description": "The assistant should extract the customer's identity information from the transcript (full name, citizen ID number, date of birth, and phone number) and include them in this request body for verification.",
-              "required": True,
-              "properties": [
-                {
-                  "id": "cccd",
-                  "type": "string",
-                  "value_type": "llm_prompt",
-                  "description": "Extract the citizen identification number (CCCD) provided by the customer. Usually 12 digits",
-                  "dynamic_variable": "",
-                  "constant_value": "",
-                  "required": True
+        "tool_config":
+            {
+                "type": "webhook",
+                "name": "confirmIdentity",
+                "description": "Call this tool to verify customer identification information, including: name, cccd, phone, dob.",
+                "response_timeout_secs": 20,
+                "disable_interruptions": False,
+                "force_pre_tool_speech": False,
+                "assignments": [],
+                "api_schema": {
+                    "url": "https://api.voice.zeedata.io/tools/confirm-identity",
+                    "method": "POST",
+                    "path_params_schema": {},
+                    "query_params_schema": None,
+                    "request_body_schema": {
+                        "type": "object",
+                        "required": [
+                            "name",
+                            "cccd",
+                            "dob",
+                            "phone"
+                        ],
+                        "description": "The assistant should extract the customer's identity information from the transcript (full name, citizen ID number, date of birth, and phone number) and include them in this request body for verification.",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Full name as spoken by the customer in Vietnamese, including both family name and given name.",
+                                "dynamic_variable": "",
+                                "constant_value": ""
+                            },
+                            "cccd": {
+                                "type": "string",
+                                "description": "Extract the citizen identification number (CCCD) provided by the customer. Usually 12 digits",
+                                "dynamic_variable": "",
+                                "constant_value": ""
+                            },
+                            "dob": {
+                                "type": "string",
+                                "description": "Date of birth in DD-MM-YYYY format.",
+                                "dynamic_variable": "",
+                                "constant_value": ""
+                            },
+                            "phone": {
+                                "type": "string",
+                                "description": "Phone number provided by the customer.",
+                                "dynamic_variable": "",
+                                "constant_value": ""
+                            }
+                        }
+                    },
+                    "request_headers": {},
+                    "auth_connection": None
                 },
-                {
-                  "id": "name",
-                  "type": "string",
-                  "value_type": "llm_prompt",
-                  "description": "Full name as spoken by the customer in Vietnamese, including both family name and given name.",
-                  "dynamic_variable": "",
-                  "constant_value": "",
-                  "required": True
-                },
-                {
-                  "id": "dob",
-                  "type": "string",
-                  "value_type": "llm_prompt",
-                  "description": "Date of birth in DD-MM-YYYY format.",
-                  "dynamic_variable": "",
-                  "constant_value": "",
-                  "required": True
-                },
-                {
-                  "id": "phone",
-                  "type": "string",
-                  "value_type": "llm_prompt",
-                  "description": "Phone number provided by the customer.",
-                  "dynamic_variable": "",
-                  "constant_value": "",
-                  "required": True
+                "dynamic_variables": {
+                    "dynamic_variable_placeholders": {}
                 }
-              ],
-              "dynamic_variable": "",
-              "constant_value": "",
-              "value_type": "llm_prompt"
-            },
-            "request_headers": [],
-            "auth_connection": None
-          },
-          "dynamic_variables": {
-            "dynamic_variable_placeholders": {}
-          },
-          "assignments": [],
-          "disable_interruptions": False,
-          "response_timeout_secs": 20,
-          "force_pre_tool_speech": "auto"
+            }
         }
-    }
+
     r = httpx.post(f"{BASE_URL}/tools", headers=headers, json=payload)
     r.raise_for_status()
     return r.json()
@@ -84,6 +75,6 @@ def create_tool(name, description, url):
 if __name__ == "__main__":
     name = "confirmIdentity"
     description = "Call this tool to verify customer identification information, including: name, cccd, phone, dob."
-    url = "https://your-server.com/verify"
+    url = "http://54.255.219.98:8101/tools/confirm-identity"
     tool = create_tool(name, description, url)
     print(tool)

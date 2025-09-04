@@ -1,3 +1,4 @@
+import logging
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Tuple
@@ -7,6 +8,7 @@ from src import config
 
 
 router = APIRouter(prefix="/tools", tags=["tools"])
+logger = logging.getLogger(__name__)
 
 data = {
         "ten": "Nguyễn Thị Cam",
@@ -58,6 +60,12 @@ def _bump_retry(session_id: str) -> int:
 
 @router.post("/confirm-identity", response_model=ConfirmIdentityResponse)
 def confirm_identity(req: ConfirmIdentityRequest):
+    logger.info(
+        "Confirm identity request received",
+        extra={
+            "request_id": getattr(req, "session_id", None),
+        },
+    )
     # Ensure expected values are configured
     ok = (
         req.name.strip() == data["ten"]
@@ -69,13 +77,22 @@ def confirm_identity(req: ConfirmIdentityRequest):
     if ok:
         if req.session_id:
             _sessions.pop(req.session_id, None)
+        logger.info("Identity verified", extra={"request_id": req.session_id})
         return ConfirmIdentityResponse(verified=True, locked=False)
 
     if req.session_id:
         retries = _bump_retry(req.session_id)
         if retries > config.max_retries:
+            logger.warning(
+                "Session locked after retries",
+                extra={"request_id": req.session_id, "retries": retries},
+            )
             return ConfirmIdentityResponse(verified=False, locked=True)
+        logger.info(
+            "Identity check failed",
+            extra={"request_id": req.session_id, "retries": retries},
+        )
         return ConfirmIdentityResponse(verified=False, locked=False)
 
+    logger.info("Identity check failed without session")
     return ConfirmIdentityResponse(verified=False, locked=False)
-

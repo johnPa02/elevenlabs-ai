@@ -74,3 +74,12 @@ docker compose up --build
 ```
 
 The API will be available at `http://localhost:8000` (health at `/health`).
+
+### Logging
+
+Configure logging via environment variables:
+
+- `LOG_LEVEL`: DEBUG, INFO, WARNING, ERROR (default: INFO)
+- `LOG_FORMAT`: `console` or `json` (default: console)
+
+Logging initializes at app startup (see `src/utils/logging_config.py`) and aligns Uvicorn/FastAPI with the root logger. Each HTTP request is logged with method, path, status code, client IP, and processing time. Sensitive payload data is not logged.
