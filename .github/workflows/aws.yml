@@ -25,7 +25,17 @@ jobs:
         docker build -t $PROJECT_NAME:dev -f Dockerfile .
         docker save $PROJECT_NAME:dev -o image.tar
 
-    - name: Deploy to EC2
+    - name: Copy image to EC2
+      uses: appleboy/scp-action@v0.1.7
+      with:
+        host: ${{ secrets.EC2_HOST }}
+        username: ${{ secrets.EC2_USERNAME }}
+        key: ${{ secrets.EC2_PRIVATE_KEY }}
+        port: 22
+        source: "image.tar"
+        target: "/home/ubuntu/${{ env.PROJECT_NAME }}/"
+
+    - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
       with:
         host: ${{ secrets.EC2_HOST }}
@@ -33,22 +43,30 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
-          scp -i ~/.ssh/id_rsa -P 22 image.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ubuntu/${PROJECT_NAME}/
-    
           cd /home/ubuntu/${PROJECT_NAME} || git clone https://github.com/johnPa02/${PROJECT_NAME}.git
           cd ${PROJECT_NAME}
           git fetch origin
           git checkout main
           git pull origin main
-    
+
           docker load -i image.tar
-    
-          # Write env & credentials safely
+
+          # Write env file safely
           printf "%s" "${{ secrets.ENV_FILE }}" > .env
-    
+
           # Restart containers
           docker compose down --remove-orphans || true
           docker compose up -d
-    
-          echo "✅ Deployed successfully to EC2"
-    
+
+          echo "⏳ Waiting for service to become healthy..."
+          for i in {1..12}; do
+            if curl -fs http://localhost:8000/health > /dev/null; then
+              echo "✅ Service is healthy"
+              exit 0
+            fi
+            echo "⏳ Still waiting... ($i/12)"
+            sleep 5
+          done
+
+          echo "❌ Service failed healthcheck"
+          exit 1
