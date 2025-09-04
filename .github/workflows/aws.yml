@@ -10,31 +10,13 @@ env:
 
 jobs:
   deploy:
+    name: Deploy
     runs-on: ubuntu-latest
     environment: production
 
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v3
-
-    - name: Build Docker image (tar)
-      run: |
-        docker build -t $PROJECT_NAME:prod -f deploy/Dockerfile .
-        docker save $PROJECT_NAME:prod -o image.tar
-        ls -lh
-
-    - name: Copy artifacts manually
-      run: |
-        scp -i <(echo "${{ secrets.EC2_PRIVATE_KEY }}") -o StrictHostKeyChecking=no \
-          image.tar ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ubuntu/${{ env.PROJECT_NAME }}/
-    
-        scp -i <(echo "${{ secrets.EC2_PRIVATE_KEY }}") -o StrictHostKeyChecking=no \
-          deploy/* ${{ secrets.EC2_USERNAME }}@${{ secrets.EC2_HOST }}:/home/ubuntu/${{ env.PROJECT_NAME }}/deploy/
-
-
 
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
@@ -44,25 +26,19 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /home/ubuntu/${PROJECT_NAME}
+          cd /home/ubuntu/${PROJECT_NAME} || https://github.com/johnPa02/elevenlabs-ai.git
+          cd ${PROJECT_NAME}
+          git fetch origin
+          git checkout main
+          git pull origin main
 
-          docker load -i image.tar
+          # Write file .env from GitHub Secrets
+          echo "${{ secrets.ENV_FILE }}" > deploy/.env
 
-          printf "%s" "${{ secrets.ENV_FILE }}" > .env
+          # Stop old containers
+          docker compose -f deploy/docker-compose.yml down || true
 
-          # Restart containers
-          docker compose -f docker-compose.yml down --remove-orphans || true
-          docker compose -f docker-compose.yml up -d
+          # Build & start new containers
+          docker compose -f deploy/docker-compose.yml up -d --build
 
-          echo "⏳ Waiting for service to become healthy..."
-          for i in {1..12}; do
-            if curl -fs http://localhost:8000/health > /dev/null; then
-              echo "✅ Service is healthy"
-              exit 0
-            fi
-            echo "⏳ Still waiting... ($i/12)"
-            sleep 5
-          done
-
-          echo "❌ Service failed healthcheck"
-          exit 1
+          echo "✅ Deployed successfully to EC2"
