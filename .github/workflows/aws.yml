@@ -26,6 +26,12 @@ jobs:
         docker save $PROJECT_NAME:prod -o image.tar
         ls -lh
 
+    - name: Verify build artifacts
+      run: |
+        pwd
+        ls -lh
+        ls -lh deploy
+
     - name: Copy artifacts to EC2
       uses: appleboy/scp-action@v0.1.7
       with:
@@ -33,14 +39,10 @@ jobs:
         username: ${{ secrets.EC2_USERNAME }}
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
-        source: |
-          ${{ github.workspace }}/image.tar
-          ${{ github.workspace }}/deploy/*
+        source: "image.tar deploy"
         target: "/home/ubuntu/${{ env.PROJECT_NAME }}/"
         overwrite: true
         debug: true
-
-
 
     - name: Deploy via SSH
       uses: appleboy/ssh-action@v1.0.0
@@ -51,7 +53,7 @@ jobs:
         port: 22
         script: |
           cd /home/ubuntu/${PROJECT_NAME}
-          
+
           docker load -i image.tar
 
           printf "%s" "${{ secrets.ENV_FILE }}" > .env
