@@ -26,19 +26,23 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         script: |
-          cd /home/ubuntu/${PROJECT_NAME} || git clone https://github.com/johnPa02/elevenlabs-ai.git
+          cd /home/ubuntu || exit 1
+          if [ ! -d "${PROJECT_NAME}/.git" ]; then
+            echo "📥 Cloning repository..."
+            rm -rf ${PROJECT_NAME}
+            git clone https://github.com/johnPa02/elevenlabs-ai.git ${PROJECT_NAME}
+          fi
+
           cd ${PROJECT_NAME}
           git fetch origin
           git checkout main
           git pull origin main
 
-          # Write file .env from GitHub Secrets
+          mkdir -p deploy
           echo "${{ secrets.ENV_FILE }}" > deploy/.env
 
-          # Stop old containers
           docker compose -f deploy/docker-compose.yml down || true
 
-          # Build & start new containers
           docker compose -f deploy/docker-compose.yml up -d --build
 
           echo "✅ Deployed successfully to EC2"
