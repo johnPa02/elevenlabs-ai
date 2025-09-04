@@ -1,8 +1,7 @@
 services:
   api:
-    build: .
-    image: zeedata/elevenlabs-ai:dev
-    container_name: elevenlabs-ai-api-dev
+    image: elevenlabs-ai:prod
+    container_name: elevenlabs-ai-api
     ports:
       - "8101:8000"
     env_file:
