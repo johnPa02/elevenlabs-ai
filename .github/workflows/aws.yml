@@ -34,11 +34,12 @@ jobs:
         key: ${{ secrets.EC2_PRIVATE_KEY }}
         port: 22
         source: |
-          image.tar
-          deploy/
+          ${{ github.workspace }}/image.tar
+          ${{ github.workspace }}/deploy/*
         target: "/home/ubuntu/${{ env.PROJECT_NAME }}/"
         overwrite: true
         debug: true
+
 
 
     - name: Deploy via SSH
