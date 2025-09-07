@@ -83,3 +83,5 @@ Configure logging via environment variables:
 - `LOG_FORMAT`: `console` or `json` (default: console)
 
 Logging initializes at app startup (see `src/utils/logging_config.py`) and aligns Uvicorn/FastAPI with the root logger. Each HTTP request is logged with method, path, status code, client IP, and processing time. Sensitive payload data is not logged.
+
+confirmIdentity id: "tool_0701k4a6h312fk380tdrq8t97r0f"

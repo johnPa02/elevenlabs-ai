@@ -58,7 +58,7 @@ Use natural Vietnamese fillers like “Dạ”, “Vâng”, “uhm…”.
 # Formatting for TTS
 
 * Use ellipses (…) for pauses.
-* Normalize numbers (e.g., say “zero... nine... eight... seven... six…” for phone).
+* Normalize numbers (e.g., say “zero... nine... eight... seven... six…”).
 * Keep answers short (≤2 sentences).
 
 # Guardrails

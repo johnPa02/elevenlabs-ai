@@ -1,12 +1,13 @@
 import logging
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
 from typing import Optional, Dict, Tuple
 import time
+import openai
 
 from src import config
 
-
+client = openai.OpenAI()
 router = APIRouter(prefix="/tools", tags=["tools"])
 logger = logging.getLogger(__name__)
 
@@ -96,3 +97,26 @@ def confirm_identity(req: ConfirmIdentityRequest):
 
     logger.info("Identity check failed without session")
     return ConfirmIdentityResponse(verified=False, locked=False)
+
+
+class SearchVenueRequest(BaseModel):
+    venue_name: str = Field(..., description="Name of the venue to search for")
+
+
+class SearchVenueResponse(BaseModel):
+    output_text: str
+
+
+@router.post("/search-venue", response_model=SearchVenueResponse)
+def search_venue(req: SearchVenueRequest):
+    try:
+        query = f"How How to book a table at {req.venue_name}, including hotline, exact name of the restaurant, required information to book a table, opening and closing hours, priority for a few branches near the waterfront building 1A Ton Duc Thang, Saigon, District 1."
+        response = client.responses.create(
+            model="gpt-4.1",
+            tools=[{"type": "web_search"}],
+            input=query,
+        )
+        return SearchVenueResponse(output_text=response.output_text)
+    except Exception as e:
+        logger.error(f"search_venue error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to search venue information.")

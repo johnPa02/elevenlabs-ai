@@ -49,8 +49,8 @@ client_tools.register("confirmIdentity", confirm_identity)
 
 conversation = Conversation(
     client=ElevenLabs(api_key=api_key),
-    agent_id=agent_id,
-    client_tools=client_tools,
+    agent_id="agent_3801k4fbtmkvf739gwvz8rgj1nb3",
+    # client_tools=client_tools,
     requires_auth=bool(api_key),
     audio_interface=DefaultAudioInterface(),
     callback_agent_response=lambda response: print(f"Agent: {response}"),

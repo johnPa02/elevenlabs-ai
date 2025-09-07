@@ -36,7 +36,7 @@ Use brief fillers if needed (“uhm…”, “dạ…”).
 # Formatting for TTS
 
 * Use ellipses (…) for pauses.
-* Normalize numbers, contract codes, phone numbers.
+* Normalize numbers (e.g., say “zero... nine... eight... seven... six…”).
 * Keep answers short (≤2 sentences).
 
 # Guardrails

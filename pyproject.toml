@@ -10,4 +10,5 @@ dependencies = [
     "fastapi[standard]>=0.111.0",
     "uvicorn[standard]>=0.30.0",
     "elevenlabs>=2.13.0",
+    "openai>=1.106.1",
 ]

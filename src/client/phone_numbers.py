@@ -46,15 +46,26 @@ def outbound_call(
         agent_id,
         agent_phone_number_id,
         to_number,
+        dynamic_variables=None,
 ) -> dict:
     """
     Make an outbound call using a specified agent and phone number.
     """
-    payload = {
-        "agent_id": agent_id,
-        "agent_phone_number_id": agent_phone_number_id,
-        "to_number": to_number
-    }
+    if dynamic_variables:
+        payload = {
+            "agent_id": agent_id,
+            "agent_phone_number_id": agent_phone_number_id,
+            "to_number": to_number,
+            "conversation_initiation_client_data": {
+                "dynamic_variables": dynamic_variables
+            }
+        }
+    else:
+        payload = {
+            "agent_id": agent_id,
+            "agent_phone_number_id": agent_phone_number_id,
+            "to_number": to_number
+        }
     r = httpx.post(f"{BASE_URL}/twilio/outbound-call", headers=headers, json=payload)
     r.raise_for_status()
     return r.json()
@@ -67,8 +78,19 @@ if __name__ == "__main__":
     phone_number_id = config.phone_number_id
     to_number = config.to_phone_number
     agent_id = config.agent_id
-
-    # Uncomment to create/update/outbound based on your env
+    loan_agent_id = "agent_5601k3g7eh6jeddbvr27f492cs72"
+    dynamic_variables = {
+        "ten": "Hoàng Anh",
+        "so_hop_dong": "838191",
+        "gioi_tinh": "Nữ",
+        "khoan_vay": "20000000",
+        "tien_thanh_toan": "2000000",
+        "han_thanh_toan": "30-09-2025",
+        "trang_thai": "Chưa thanh toán",
+        "prefix": "chị"
+    }
     # print(create_twilio_phone_number(phone_number, label, sid, token))
-    # print(update_phone_number(phone_number_id, agent_id))
-    print(outbound_call(agent_id=agent_id, agent_phone_number_id=phone_number_id, to_number=to_number))
+    # print(update_phone_number(phone_number_id, loan_agent_id))
+    print(outbound_call(
+        agent_id=agent_id, agent_phone_number_id=phone_number_id, to_number=to_number)
+    )

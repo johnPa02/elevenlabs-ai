@@ -54,7 +54,7 @@ def list_agents():
     r.raise_for_status()
     return r.json()
 
-def create_agent(first_message, system_prompt, dynamic_variables, voice_id):
+def create_agent(first_message, system_prompt, voice_id, name):
     payload = {
         "conversation_config": {
             "tts": {
@@ -66,32 +66,30 @@ def create_agent(first_message, system_prompt, dynamic_variables, voice_id):
                 "first_message": first_message,
                 "language": "vi",
                 "prompt": {
-                    "prompt": system_prompt,
-                    "llm": "gemini-2.5-flash-lite-preview-06-17",
-                    "tool_ids": ["tool_1601k3n5qap5es989vf4xzdewb51"]
+                    "prompt": system_prompt
                 },
-                "dynamic_variables": {
-                    "dynamic_variable_placeholders": dynamic_variables
-                }
             }
         },
-        "name": "Consent Agent",
+        "name": name
     }
     r = requests.post(f"{BASE_URL}/convai/agents/create", headers=headers, json=payload)
     print("DEBUG response:", r.status_code, r.text)
     r.raise_for_status()
     return r.json()
 
-def update_agent(agent_id, first_message, system_prompt, voice_id):
+def update_agent(agent_id, first_message, system_prompt, voice_id, tool_id=None):
     payload = {
         "conversation_config": {
+            "asr": {
+                "keywords": ["The-gang", "Hokkaido", "The-gang-central"]
+            },
             "tts": {
                 "voice_id": voice_id,
                 "model_id": "eleven_flash_v2_5",
                 "pronunciation_dictionary_locators": [
                     {
-                        "pronunciation_dictionary_id": "8kG5F0zu76Gr2k8oyS2x",
-                        "version_id": "5kIfUFqx9ImLvAcgSccw"
+                        "pronunciation_dictionary_id": "wIaCmFgqdXZfx2jx7YCN",
+                        "version_id": "LGUsbhjlAH2lj79VdyJY"
                     }
                 ],
                 "optimize_streaming_latency": 3
@@ -102,7 +100,30 @@ def update_agent(agent_id, first_message, system_prompt, voice_id):
                 "prompt": {
                     "prompt": system_prompt,
                     "llm": "gpt-4o",
-                    "tool_ids": ["tool_0701k4a6h312fk380tdrq8t97r0f"]
+                    "tool_ids": [tool_id] if tool_id else []
+                },
+            }
+        },
+    }
+    r = requests.patch(f"{BASE_URL}/convai/agents/{agent_id}", headers=headers, json=payload)
+    print("DEBUG response:", r.status_code, r.text)
+    r.raise_for_status()
+    return r.json()
+
+def update_loan_agent(agent_id, loan_system_prompt):
+    payload = {
+        "conversation_config": {
+            "tts": {
+                "pronunciation_dictionary_locators": [
+                    {
+                        "pronunciation_dictionary_id": "wIaCmFgqdXZfx2jx7YCN",
+                        "version_id": "LGUsbhjlAH2lj79VdyJY"
+                    }
+                ],
+            },
+            "agent": {
+                "prompt": {
+                    "prompt": loan_system_prompt,
                 },
             }
         },
@@ -118,29 +139,33 @@ def get_agent(agent_id):
     return r.json()
 
 if __name__ == "__main__":
-    # url_method1 = generate_talk_to_url("agent_5601k3g7eh6jeddbvr27f492cs72", config.dynamic_variables)
+    # url_method1 = generate_talk_to_url("agent_3801k4fbtmkvf739gwvz8rgj1nb3", None)
     # print(url_method1)
 
-    # print(get_agent(config.agent_id))
-    # system_prompt = load_prompt_template("consent_agent/system_prompt.md")
+    # print(get_agent("agent_5601k3g7eh6jeddbvr27f492cs72"))
+    # first_message = "Chào sếp! Tối nay đi đâu chơi không?"
+    # system_prompt = load_prompt_template("booking/system_prompt.md")
     # agent = create_agent(
-    #     first_message="Chào anh! Em là Thúy Kiều, Kiều xin phép xác nhận một số thông tin nhé!",
-    #     dynamic_variables=None,
+    #     first_message=first_message,
     #     system_prompt=system_prompt,
-    #     voice_id=None,
+    #     voice_id="BUPPIXeDaJWBz696iXRS",
+    #     name="Booking Intake Agent"
     # )
     # print(agent)
 
     # agents = list_agents()
     # print(agents)
-    system_prompt = load_prompt_template("consent_agent/system_prompt.md")
+
+    system_prompt = load_prompt_template("booking/system_prompt.md")
     agent = update_agent(
-        agent_id=config.agent_id,
-        first_message="Chào anh! Em là Thúy Kiều, Kiều xin phép xác nhận một số thông tin nhé!",
+        agent_id="agent_3801k4fbtmkvf739gwvz8rgj1nb3",
+        first_message="Chào sếp, tối nay đi đâu chơi không?",
         system_prompt=system_prompt,
         voice_id="BUPPIXeDaJWBz696iXRS",
+        tool_id="tool_9501k4ht04tzfkdt8qsc8vkz30b3"
     )
-    print(agent)
+    # loan_system_prompt = load_prompt_template("system_prompt_v1.md")
+    # update_loan_agent(agent_id="agent_5601k3g7eh6jeddbvr27f492cs72", loan_system_prompt=loan_system_prompt)
 
     # if not agents.get("agents"):
     #     print("⚠️ No agents found, creating one...")

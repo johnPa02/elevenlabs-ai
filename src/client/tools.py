@@ -7,55 +7,35 @@ headers = {
     "Content-Type": "application/json"
 }
 
-def create_tool(name, description, url):
+def create_tool(name):
     payload = {
         "tool_config":
             {
                 "type": "webhook",
-                "name": "confirmIdentity",
-                "description": "Call this tool to verify customer identification information, including: name, cccd, phone, dob.",
+                "name": name,
+                "description": "Use this tool to look up venue details by name for a reservation request.",
                 "response_timeout_secs": 20,
                 "disable_interruptions": False,
                 "force_pre_tool_speech": False,
                 "assignments": [],
                 "api_schema": {
-                    "url": "https://api.voice.zeedata.io/tools/confirm-identity",
+                    "url": "https://api.voice.zeedata.io/tools/search-venue",
                     "method": "POST",
                     "path_params_schema": {},
                     "query_params_schema": None,
                     "request_body_schema": {
                         "type": "object",
                         "required": [
-                            "name",
-                            "cccd",
-                            "dob",
-                            "phone"
+                            "venue_name",
                         ],
-                        "description": "The assistant should extract the customer's identity information from the transcript (full name, citizen ID number, date of birth, and phone number) and include them in this request body for verification.",
+                        "description": "The assistant should extract the name of the venue provided by the user. This value will be used to search for venue details such as address, hours, hotline, and booking requirements.",
                         "properties": {
-                            "name": {
+                            "venue_name": {
                                 "type": "string",
-                                "description": "Full name as spoken by the customer in Vietnamese, including both family name and given name.",
+                                "description": "Name of the venue to search for",
                                 "dynamic_variable": "",
-                                "constant_value": ""
-                            },
-                            "cccd": {
-                                "type": "string",
-                                "description": "Extract the citizen identification number (CCCD) provided by the customer. Usually 12 digits",
-                                "dynamic_variable": "",
-                                "constant_value": ""
-                            },
-                            "dob": {
-                                "type": "string",
-                                "description": "Date of birth in DD-MM-YYYY format.",
-                                "dynamic_variable": "",
-                                "constant_value": ""
-                            },
-                            "phone": {
-                                "type": "string",
-                                "description": "Phone number provided by the customer.",
-                                "dynamic_variable": "",
-                                "constant_value": ""
+                                "constant_value": "",
+                                "value_type": "llm_prompt"
                             }
                         }
                     },
@@ -73,8 +53,37 @@ def create_tool(name, description, url):
     return r.json()
 
 if __name__ == "__main__":
-    name = "confirmIdentity"
-    description = "Call this tool to verify customer identification information, including: name, cccd, phone, dob."
-    url = "http://54.255.219.98:8101/tools/confirm-identity"
-    tool = create_tool(name, description, url)
+    # name = "confirmIdentity"
+    # description = "Call this tool to verify customer identification information, including: name, cccd, phone, dob."
+    # url = "http://54.255.219.98:8101/tools/confirm-identity"
+    # consent_properties = {
+    #     {
+    #         "name": {
+    #             "type": "string",
+    #             "description": "Full name as spoken by the customer in Vietnamese, including both family name and given name.",
+    #             "dynamic_variable": "",
+    #             "constant_value": ""
+    #         },
+    #         "cccd": {
+    #             "type": "string",
+    #             "description": "Extract the citizen identification number (CCCD) provided by the customer. Usually 12 digits",
+    #             "dynamic_variable": "",
+    #             "constant_value": ""
+    #         },
+    #         "dob": {
+    #             "type": "string",
+    #             "description": "Date of birth in DD-MM-YYYY format.",
+    #             "dynamic_variable": "",
+    #             "constant_value": ""
+    #         },
+    #         "phone": {
+    #             "type": "string",
+    #             "description": "Phone number provided by the customer.",
+    #             "dynamic_variable": "",
+    #             "constant_value": ""
+    #         }
+    #     }
+    # }
+    tool = create_tool(name="searchVenue")
+    # searchVenue tool id: tool_9501k4ht04tzfkdt8qsc8vkz30b3
     print(tool)

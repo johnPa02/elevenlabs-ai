@@ -15,7 +15,7 @@ async def create_pronunciation_dictionary_from_rules():
         }
 
         data = {
-            "name": "My Custom Dictionary",
+            "name": "Custom Dictionary",
             "rules": [
                 {
                     "type": "alias",
@@ -46,6 +46,86 @@ async def create_pronunciation_dictionary_from_rules():
                     "type": "alias",
                     "string_to_replace": "Mi",
                     "alias": "Mii"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Hạn",
+                    "alias": "Hàn"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "hạn",
+                    "alias": "hàn"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "4",
+                    "alias": "bún"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "bốn",
+                    "alias": "bún"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Bốn",
+                    "alias": "bún"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "vay",
+                    "alias": "vayy"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Vay",
+                    "alias": "vayy"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "hiện",
+                    "alias": "hìen"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Hiện",
+                    "alias": "hìen"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "chị",
+                    "alias": "trị"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "khoản",
+                    "alias": "khoãn"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Khoản",
+                    "alias": "khoãn"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "hai",
+                    "alias": "hayy"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Hai",
+                    "alias": "Hayy"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "chủ",
+                    "alias": "chù"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Chủ",
+                    "alias": "Chủ"
                 }
             ]
         }
@@ -54,7 +134,7 @@ async def create_pronunciation_dictionary_from_rules():
 
         if response.status_code == 200:
             result = response.json()
-            print(f"Created dictionary with ID: {result['id']}")
+            print(f"Created dictionary with ID: {result}")
             return result
         else:
             print(f"Error: {response.status_code} - {response.text}")
