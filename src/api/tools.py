@@ -129,7 +129,7 @@ class CallHotlineRequest(BaseModel):
 
 
 class CallHotlineResponse(BaseModel):
-    result: str
+    result: dict
 
 
 @router.post("/call-hotline", response_model=CallHotlineResponse)
