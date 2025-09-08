@@ -6,6 +6,7 @@ import time
 import openai
 
 from src import config
+from src.client.phone_numbers import outbound_call
 
 client = openai.OpenAI()
 router = APIRouter(prefix="/tools", tags=["tools"])
@@ -133,13 +134,15 @@ class CallHotlineResponse(BaseModel):
 
 @router.post("/call-hotline", response_model=CallHotlineResponse)
 def call_hotline(req: CallHotlineRequest):
-    # Simulate calling the hotline and making a booking
-    # In a real implementation, this would integrate with a telephony API or booking system
     try:
-        # For demo, just echo the request
         logger.info(f"Calling hotline {req.hotline} with info: {req.booking_info}")
-        # Simulate booking result
-        result = f"Successfully called {req.hotline} and provided booking info: {req.booking_info}"
+        result = outbound_call(
+        agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+        agent_phone_number_id=config.phone_number_id,
+        to_number=config.to_phone_number,
+        dynamic_variables= {
+            "booking_info": req.booking_info,
+        })
         return CallHotlineResponse(result=result)
     except Exception as e:
         logger.error(f"call_hotline error: {e}")

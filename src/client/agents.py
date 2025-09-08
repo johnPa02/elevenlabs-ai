@@ -81,7 +81,7 @@ def update_agent(agent_id, first_message, system_prompt, voice_id, tool_ids=None
     payload = {
         "conversation_config": {
             "asr": {
-                "keywords": ["The-gang", "Hokkaido", "The-gang-central"]
+                "keywords": ["The-gang", "Hokkaido", "The-gang-central", "Gangs"]
             },
             "tts": {
                 "voice_id": voice_id,
@@ -153,7 +153,7 @@ if __name__ == "__main__":
     #     })
     # print(url_method1)
 
-    # print(get_agent("agent_5601k3g7eh6jeddbvr27f492cs72"))
+    # print(get_agent("agent_4701k4kq3119enmbvvkwz5cey2rm"))
     # first_message = "Alo, em gọi để đặt bàn tại nhà hàng mình."
     # system_prompt = load_prompt_template("booking/system_prompt_action.md")
     # agent = create_agent(
@@ -166,6 +166,8 @@ if __name__ == "__main__":
     # agents = list_agents()
     # print(agents)
     # Tools booking intake: ["tool_9501k4ht04tzfkdt8qsc8vkz30b3", "tool_4701k4kqda9yfedb6vx44jk9258x"]
+    # Intake Agent: agent_3801k4fbtmkvf739gwvz8rgj1nb3
+    # Action Agent: agent_4701k4kq3119enmbvvkwz5cey2rm
     system_prompt = load_prompt_template("booking/system_prompt_action.md")
     agent = update_agent(
         agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",

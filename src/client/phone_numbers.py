@@ -90,7 +90,19 @@ if __name__ == "__main__":
         "prefix": "chị"
     }
     # print(create_twilio_phone_number(phone_number, label, sid, token))
-    # print(update_phone_number(phone_number_id, loan_agent_id))
+    # print(update_phone_number(phone_number_id, "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     print(outbound_call(
-        agent_id=agent_id, agent_phone_number_id=phone_number_id, to_number=to_number)
+        agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+        agent_phone_number_id=phone_number_id,
+        to_number=to_number,
+        dynamic_variables= {
+            "booking_info": """{
+                "date": "2025-09-12",
+                "time": "19:00",
+                "guests": 2,
+                "name": "Vũ Hùng Cường",
+                "phone": "0933725681",
+                "notes": "Prefer window seat"
+            }"""
+        })
     )
