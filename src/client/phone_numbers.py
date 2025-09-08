@@ -71,29 +71,32 @@ def outbound_call(
     return r.json()
 
 if __name__ == "__main__":
-    phone_number = "+16592349090"
-    label = "Thuy Kieu"
-    sid = config.twilio_sid
-    token = config.twilio_token
+    # phone_number = "+16592349090"
+    # label = "Thuy Kieu"
+    # sid = config.twilio_sid
+    # token = config.twilio_token
     phone_number_id = config.phone_number_id
     to_number = config.to_phone_number
-    agent_id = config.agent_id
-    loan_agent_id = "agent_5601k3g7eh6jeddbvr27f492cs72"
-    dynamic_variables = {
-        "ten": "Hoàng Anh",
-        "so_hop_dong": "838191",
-        "gioi_tinh": "Nữ",
-        "khoan_vay": "20000000",
-        "tien_thanh_toan": "2000000",
-        "han_thanh_toan": "30-09-2025",
-        "trang_thai": "Chưa thanh toán",
-        "prefix": "chị"
-    }
-    # print(create_twilio_phone_number(phone_number, label, sid, token))
-    # print(update_phone_number(phone_number_id, "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    # agent_id = config.agent_id
+    # loan_agent_id = "agent_5601k3g7eh6jeddbvr27f492cs72"
+    # dynamic_variables = {
+    #     "ten": "Hoàng Anh",
+    #     "so_hop_dong": "838191",
+    #     "gioi_tinh": "Nữ",
+    #     "khoan_vay": "20000000",
+    #     "tien_thanh_toan": "2000000",
+    #     "han_thanh_toan": "30-09-2025",
+    #     "trang_thai": "Chưa thanh toán",
+    #     "prefix": "chị"
+    # }
+    # print(create_twilio_phone_number(
+    #     "+15735383269",
+    #     "My", "ACb6ab4c409d13788189707572cec5e581",
+    #     "ca9b3cfedeeb6bfe3b60992fec51762c"))
+    # print(update_phone_number("phnum_8501k4m9yjh0f33v1vnzpmb8k4c9", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     print(outbound_call(
         agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-        agent_phone_number_id=phone_number_id,
+        agent_phone_number_id="phnum_8501k4m9yjh0f33v1vnzpmb8k4c9",
         to_number=to_number,
         dynamic_variables= {
             "booking_info": """{

@@ -129,20 +129,26 @@ class CallHotlineRequest(BaseModel):
 
 
 class CallHotlineResponse(BaseModel):
-    result: dict
+    result: str
 
 
 @router.post("/call-hotline", response_model=CallHotlineResponse)
 def call_hotline(req: CallHotlineRequest):
     try:
         logger.info(f"Calling hotline {req.hotline} with info: {req.booking_info}")
-        result = outbound_call(
-        agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-        agent_phone_number_id=config.phone_number_id,
-        to_number=config.to_phone_number,
-        dynamic_variables= {
-            "booking_info": req.booking_info,
-        })
+        call_res = outbound_call(
+            agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+            agent_phone_number_id=config.phone_number_id,
+            to_number=config.to_phone_number,
+            dynamic_variables= {
+                "booking_info": req.booking_info,
+            }
+        )
+        success = call_res.get("success")
+        if success:
+            result = "Call initiated successfully. Agent is calling the hotline."
+        else:
+            result = f"Call initiation failed: {call_res.get('message', 'Unknown error')}"
         return CallHotlineResponse(result=result)
     except Exception as e:
         logger.error(f"call_hotline error: {e}")
