@@ -13,7 +13,7 @@ def create_twilio_phone_number(
         phone_number,
         label,
         sid,
-        token,
+        token
 ) -> dict:
     """
     Create a Twilio phone number in ElevenLabs ConvAI.
@@ -75,7 +75,7 @@ if __name__ == "__main__":
     # label = "Thuy Kieu"
     # sid = config.twilio_sid
     # token = config.twilio_token
-    phone_number_id = config.phone_number_id
+    # phone_number_id = config.phone_number_id
     to_number = config.to_phone_number
     # agent_id = config.agent_id
     # loan_agent_id = "agent_5601k3g7eh6jeddbvr27f492cs72"
@@ -90,13 +90,14 @@ if __name__ == "__main__":
     #     "prefix": "chị"
     # }
     # print(create_twilio_phone_number(
-    #     "+15735383269",
-    #     "My", "ACb6ab4c409d13788189707572cec5e581",
-    #     "ca9b3cfedeeb6bfe3b60992fec51762c"))
-    # print(update_phone_number("phnum_8501k4m9yjh0f33v1vnzpmb8k4c9", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    #     "+19786794308",
+    #     "Kina",
+    #     "AC512c0c29ae6ec8120004ee07178148f2",
+    #     "cced382c30c81979e1ce0b82ac269657"))
+    # print(update_phone_number("phnum_7701k4mdn82wff19adrhdxh2nkja", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     print(outbound_call(
         agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-        agent_phone_number_id="phnum_8501k4m9yjh0f33v1vnzpmb8k4c9",
+        agent_phone_number_id="phnum_7701k4mdn82wff19adrhdxh2nkja",
         to_number=to_number,
         dynamic_variables= {
             "booking_info": """{
