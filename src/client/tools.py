@@ -13,30 +13,38 @@ def create_tool(name):
             {
                 "type": "webhook",
                 "name": name,
-                "description": "Use this tool to look up venue details by name for a reservation request.",
+                "description": "Use this tool to call the booking hotline based on the hotline and collected booking information.",
                 "response_timeout_secs": 20,
                 "disable_interruptions": False,
                 "force_pre_tool_speech": False,
                 "assignments": [],
                 "api_schema": {
-                    "url": "https://api.voice.zeedata.io/tools/search-venue",
+                    "url": "https://api.voice.zeedata.io/tools/call-hotline",
                     "method": "POST",
                     "path_params_schema": {},
                     "query_params_schema": None,
                     "request_body_schema": {
                         "type": "object",
                         "required": [
-                            "venue_name",
+                            "booking_info",
+                            "hotline"
                         ],
-                        "description": "The assistant should extract the name of the venue provided by the user. This value will be used to search for venue details such as address, hours, hotline, and booking requirements.",
+                        "description": "The assistant should extract the branch hotline confirmed by the user and the booking_info containing reservation details. These values will be used to complete the booking request.",
                         "properties": {
-                            "venue_name": {
+                            "hotline": {
                                 "type": "string",
-                                "description": "Name of the venue to search for",
+                                "description": "The phone number of the specific restaurant/venue branch confirmed by the user, used to call directly for the booking.",
                                 "dynamic_variable": "",
                                 "constant_value": "",
                                 "value_type": "llm_prompt"
-                            }
+                            },
+                            "booking_info": {
+                                "type": "string",
+                                "description": "All booking details provided by the user, extracted into a single structured string",
+                                "dynamic_variable": "",
+                                "constant_value": "",
+                                "value_type": "llm_prompt"
+                            },
                         }
                     },
                     "request_headers": {},
@@ -84,6 +92,6 @@ if __name__ == "__main__":
     #         }
     #     }
     # }
-    tool = create_tool(name="searchVenue")
+    tool = create_tool(name="callHotline")
     # searchVenue tool id: tool_9501k4ht04tzfkdt8qsc8vkz30b3
     print(tool)

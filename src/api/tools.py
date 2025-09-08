@@ -120,3 +120,27 @@ def search_venue(req: SearchVenueRequest):
     except Exception as e:
         logger.error(f"search_venue error: {e}")
         raise HTTPException(status_code=500, detail="Failed to search venue information.")
+
+
+class CallHotlineRequest(BaseModel):
+    hotline: str = Field(..., description="Hotline number to call for booking")
+    booking_info: str = Field(..., description="Booking information to provide when calling the hotline")
+
+
+class CallHotlineResponse(BaseModel):
+    result: str
+
+
+@router.post("/call-hotline", response_model=CallHotlineResponse)
+def call_hotline(req: CallHotlineRequest):
+    # Simulate calling the hotline and making a booking
+    # In a real implementation, this would integrate with a telephony API or booking system
+    try:
+        # For demo, just echo the request
+        logger.info(f"Calling hotline {req.hotline} with info: {req.booking_info}")
+        # Simulate booking result
+        result = f"Successfully called {req.hotline} and provided booking info: {req.booking_info}"
+        return CallHotlineResponse(result=result)
+    except Exception as e:
+        logger.error(f"call_hotline error: {e}")
+        raise HTTPException(status_code=500, detail="Failed to call hotline and book.")

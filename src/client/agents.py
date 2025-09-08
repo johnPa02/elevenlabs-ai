@@ -77,7 +77,7 @@ def create_agent(first_message, system_prompt, voice_id, name):
     r.raise_for_status()
     return r.json()
 
-def update_agent(agent_id, first_message, system_prompt, voice_id, tool_id=None):
+def update_agent(agent_id, first_message, system_prompt, voice_id, tool_ids=None):
     payload = {
         "conversation_config": {
             "asr": {
@@ -100,7 +100,7 @@ def update_agent(agent_id, first_message, system_prompt, voice_id, tool_id=None)
                 "prompt": {
                     "prompt": system_prompt,
                     "llm": "gpt-4o",
-                    "tool_ids": [tool_id] if tool_id else []
+                    "tool_ids": tool_ids if tool_ids else []
                 },
             }
         },
@@ -139,30 +139,40 @@ def get_agent(agent_id):
     return r.json()
 
 if __name__ == "__main__":
-    # url_method1 = generate_talk_to_url("agent_3801k4fbtmkvf739gwvz8rgj1nb3", None)
+    # url_method1 = generate_talk_to_url(
+    #     "agent_4701k4kq3119enmbvvkwz5cey2rm",
+    #     {
+    #         "booking_info": """{
+    #             "date": "2025-09-12",
+    #             "time": "19:00",
+    #             "guests": 2,
+    #             "name": "Vũ Hùng Cường",
+    #             "phone": "0933725681",
+    #             "notes": "Prefer window seat"
+    #         }"""
+    #     })
     # print(url_method1)
 
     # print(get_agent("agent_5601k3g7eh6jeddbvr27f492cs72"))
-    # first_message = "Chào sếp! Tối nay đi đâu chơi không?"
-    # system_prompt = load_prompt_template("booking/system_prompt.md")
+    # first_message = "Alo, em gọi để đặt bàn tại nhà hàng mình."
+    # system_prompt = load_prompt_template("booking/system_prompt_action.md")
     # agent = create_agent(
     #     first_message=first_message,
     #     system_prompt=system_prompt,
     #     voice_id="BUPPIXeDaJWBz696iXRS",
-    #     name="Booking Intake Agent"
+    #     name="Booking Action Agent"
     # )
-    # print(agent)
 
     # agents = list_agents()
     # print(agents)
-
-    system_prompt = load_prompt_template("booking/system_prompt.md")
+    # Tools booking intake: ["tool_9501k4ht04tzfkdt8qsc8vkz30b3", "tool_4701k4kqda9yfedb6vx44jk9258x"]
+    system_prompt = load_prompt_template("booking/system_prompt_action.md")
     agent = update_agent(
-        agent_id="agent_3801k4fbtmkvf739gwvz8rgj1nb3",
-        first_message="Chào sếp, tối nay đi đâu chơi không?",
+        agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+        first_message="Alo, em gọi để đặt bàn tại nhà hàng mình.",
         system_prompt=system_prompt,
         voice_id="BUPPIXeDaJWBz696iXRS",
-        tool_id="tool_9501k4ht04tzfkdt8qsc8vkz30b3"
+        tool_ids=[]
     )
     # loan_system_prompt = load_prompt_template("system_prompt_v1.md")
     # update_loan_agent(agent_id="agent_5601k3g7eh6jeddbvr27f492cs72", loan_system_prompt=loan_system_prompt)
