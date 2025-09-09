@@ -138,7 +138,7 @@ def call_hotline(req: CallHotlineRequest):
         logger.info(f"Calling hotline {req.hotline} with info: {req.booking_info}")
         call_res = outbound_call(
             agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-            agent_phone_number_id="phnum_2801k4pycspwenm969j962wykm8v",
+            agent_phone_number_id="phnum_9801k4q3kekqe9vacy31m86gcktf",
             to_number=config.to_phone_number,
             dynamic_variables= {
                 "booking_info": req.booking_info,

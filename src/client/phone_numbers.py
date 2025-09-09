@@ -25,6 +25,7 @@ def create_twilio_phone_number(
         "token": token
     }
     r = httpx.post(f"{BASE_URL}/phone-numbers", headers=headers, json=payload)
+    print(r.text)
     r.raise_for_status()
     return r.json()
 
@@ -90,23 +91,23 @@ if __name__ == "__main__":
     #     "prefix": "chị"
     # }
     # print(create_twilio_phone_number(
-    #     "+14195572294",
-    #     "Ivita",
-    #     "AC94624b468879afb06fa2c3c9e5f1708a",
-    #     "9ab1944037bccff389516be54df5c9c8"))
-    # print(update_phone_number("phnum_2801k4pycspwenm969j962wykm8v", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
-    print(outbound_call(
-        agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-        agent_phone_number_id="phnum_2801k4pycspwenm969j962wykm8v",
-        to_number=to_number,
-        dynamic_variables= {
-            "booking_info": """{
-                "date": "2025-09-12",
-                "time": "19:00",
-                "guests": 2,
-                "name": "Vũ Hùng Cường",
-                "phone": "0933725681",
-                "notes": "Prefer window seat"
-            }"""
-        })
-    )
+    #     phone_number="+12052935445",
+    #     label="Ivitas",
+    #     sid="AC94624b468879afb06fa2c3c9e5f1708a",
+    #     token="409f38c054be6ca0e2fac293d76eee8f"))
+    # print(update_phone_number("phnum_9801k4q3kekqe9vacy31m86gcktf", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    # print(outbound_call(
+    #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+    #     agent_phone_number_id="phnum_2801k4pycspwenm969j962wykm8v",
+    #     to_number=to_number,
+    #     dynamic_variables= {
+    #         "booking_info": """{
+    #             "date": "2025-09-12",
+    #             "time": "19:00",
+    #             "guests": 2,
+    #             "name": "Vũ Hùng Cường",
+    #             "phone": "0933725681",
+    #             "notes": "Prefer window seat"
+    #         }"""
+    #     })
+    # )
