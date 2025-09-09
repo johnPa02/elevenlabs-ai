@@ -90,14 +90,14 @@ if __name__ == "__main__":
     #     "prefix": "chị"
     # }
     # print(create_twilio_phone_number(
-    #     "+19786794308",
-    #     "Kina",
-    #     "AC512c0c29ae6ec8120004ee07178148f2",
-    #     "cced382c30c81979e1ce0b82ac269657"))
-    # print(update_phone_number("phnum_7701k4mdn82wff19adrhdxh2nkja", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    #     "+14195572294",
+    #     "Ivita",
+    #     "AC94624b468879afb06fa2c3c9e5f1708a",
+    #     "9ab1944037bccff389516be54df5c9c8"))
+    # print(update_phone_number("phnum_2801k4pycspwenm969j962wykm8v", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     print(outbound_call(
         agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-        agent_phone_number_id="phnum_7701k4mdn82wff19adrhdxh2nkja",
+        agent_phone_number_id="phnum_2801k4pycspwenm969j962wykm8v",
         to_number=to_number,
         dynamic_variables= {
             "booking_info": """{
