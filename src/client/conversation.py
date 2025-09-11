@@ -30,13 +30,8 @@ def format_conversation(transcript):
 #     conversation_id="conv_8401k4fe2zq2ehn8xbn0ca5fb8db",
 # ).transcript))
 
-def get_lastest_conversation(conv_id: str = None):
-    if conv_id:
-        conversations = client.conversational_ai.conversations.get(
-            conversation_id=conv_id,
-        )
-    else:
-        conversations = client.conversational_ai.conversations.list().conversations[0]
+def get_lastest_conversation():
+    conversations = client.conversational_ai.conversations.list().conversations[1]
     agent_name = conversations.agent_name
     conversation_id = conversations.conversation_id
     title = conversations.call_summary_title
@@ -47,3 +42,4 @@ def get_lastest_conversation(conv_id: str = None):
 
 if __name__ == "__main__":
     get_lastest_conversation()
+

@@ -136,6 +136,21 @@ async def create_pronunciation_dictionary_from_rules():
                     "type": "alias",
                     "string_to_replace": "tối",
                     "alias": "tói"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "đặt",
+                    "alias": "đạc"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "chỗ",
+                    "alias": "trow"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "trống",
+                    "alias": "chóng"
                 }
             ]
         }

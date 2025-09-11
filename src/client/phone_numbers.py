@@ -77,6 +77,15 @@ if __name__ == "__main__":
     # sid = config.twilio_sid
     # token = config.twilio_token
     # phone_number_id = config.phone_number_id
+    # from elevenlabs import ElevenLabs
+    #
+    # client = ElevenLabs(
+    #     api_key=config.e_api_key,
+    # )
+    # print(client.conversational_ai.phone_numbers.list())
+    # print(client.conversational_ai.phone_numbers.delete(
+    #     phone_number_id="phnum_9801k4q3kekqe9vacy31m86gcktf",
+    # ))
     to_number = config.to_phone_number
     # agent_id = config.agent_id
     # loan_agent_id = "agent_5601k3g7eh6jeddbvr27f492cs72"
@@ -92,10 +101,16 @@ if __name__ == "__main__":
     # }
     # print(create_twilio_phone_number(
     #     phone_number="+12052935445",
-    #     label="Ivitas",
+    #     label="Lumina",
     #     sid="AC94624b468879afb06fa2c3c9e5f1708a",
     #     token="409f38c054be6ca0e2fac293d76eee8f"))
-    # print(update_phone_number("phnum_9801k4q3kekqe9vacy31m86gcktf", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    # print(create_twilio_phone_number(
+    #     phone_number="+15735383269",
+    #     label="John",
+    #     sid="ACb6ab4c409d13788189707572cec5e581",
+    #     token="d79afa176c135b09efba8179789bd4f2"))
+    # print(update_phone_number("phnum_3201k4vcpw0xfcebk5vrgerzrncp", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    # WARNING: NEVER CALL IN LOCAL !!!
     # print(outbound_call(
     #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
     #     agent_phone_number_id="phnum_2801k4pycspwenm969j962wykm8v",
