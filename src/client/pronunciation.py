@@ -140,12 +140,12 @@ async def create_pronunciation_dictionary_from_rules():
                 {
                     "type": "alias",
                     "string_to_replace": "đặt",
-                    "alias": "đạc"
+                    "alias": "book"
                 },
                 {
                     "type": "alias",
                     "string_to_replace": "chỗ",
-                    "alias": "trow"
+                    "alias": "chồ"
                 },
                 {
                     "type": "alias",

@@ -1,6 +1,10 @@
 import httpx
 from src import config
 from src.config import agent_id
+from elevenlabs import ElevenLabs, OutboundSipTrunkConfigRequestModel
+from elevenlabs.conversational_ai.phone_numbers import (
+    PhoneNumbersCreateRequestBody_SipTrunk
+)
 
 BASE_URL = "https://api.elevenlabs.io/v1/convai"
 
@@ -79,12 +83,30 @@ if __name__ == "__main__":
     # phone_number_id = config.phone_number_id
     # from elevenlabs import ElevenLabs
     #
-    # client = ElevenLabs(
-    #     api_key=config.e_api_key,
+    client = ElevenLabs(
+        api_key=config.e_api_key,
+    )
+    # client.conversational_ai.phone_numbers.create(
+    #     request=PhoneNumbersCreateRequestBody_SipTrunk(
+    #         phone_number="+12083303183",
+    #         label="Alo",
+    #         outbound_trunk_config=OutboundSipTrunkConfigRequestModel(
+    #             address="sip:lumination@lumina-41a3eea89511.sip.signalwire.com"
+    #         )
+    #     ),
     # )
     # print(client.conversational_ai.phone_numbers.list())
+    # client.conversational_ai.phone_numbers.update(
+    #     phone_number_id="phnum_6201k4xzfg5qe8kacjr2s4475wv9",
+    #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+    # )
+    # print(client.conversational_ai.sip_trunk.outbound_call(
+    #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+    #     agent_phone_number_id="phnum_6201k4xzfg5qe8kacjr2s4475wv9",
+    #     to_number=config.to_phone_number,
+    # ))
     # print(client.conversational_ai.phone_numbers.delete(
-    #     phone_number_id="phnum_9801k4q3kekqe9vacy31m86gcktf",
+    #     phone_number_id="phnum_3201k4vcpw0xfcebk5vrgerzrncp",
     # ))
     to_number = config.to_phone_number
     # agent_id = config.agent_id
@@ -100,20 +122,15 @@ if __name__ == "__main__":
     #     "prefix": "chị"
     # }
     # print(create_twilio_phone_number(
-    #     phone_number="+12052935445",
-    #     label="Lumina",
-    #     sid="AC94624b468879afb06fa2c3c9e5f1708a",
-    #     token="409f38c054be6ca0e2fac293d76eee8f"))
-    # print(create_twilio_phone_number(
-    #     phone_number="+15735383269",
+    #     phone_number="+14722125928",
     #     label="John",
-    #     sid="ACb6ab4c409d13788189707572cec5e581",
-    #     token="d79afa176c135b09efba8179789bd4f2"))
-    # print(update_phone_number("phnum_3201k4vcpw0xfcebk5vrgerzrncp", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    #     sid="ACc5ff0d6deb4d4542406db6b16cb99ba1",
+    #     token="016adeda7c9891526cf406a7236636ea"))
+    # print(update_phone_number("phnum_2301k4y1w7a2es3811c6wg1t0m0n", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     # WARNING: NEVER CALL IN LOCAL !!!
     # print(outbound_call(
     #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-    #     agent_phone_number_id="phnum_2801k4pycspwenm969j962wykm8v",
+    #     agent_phone_number_id="phnum_3201k4vcpw0xfcebk5vrgerzrncp",
     #     to_number=to_number,
     #     dynamic_variables= {
     #         "booking_info": """{
