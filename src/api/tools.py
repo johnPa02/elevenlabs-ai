@@ -139,7 +139,7 @@ def call_hotline(req: CallHotlineRequest):
         call_res = outbound_call(
             agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
             agent_phone_number_id="phnum_6501k5625bkvf09rdhn31gfycw6h",
-            to_number=config.to_phone_number,
+            to_number="+84367907507",
             dynamic_variables= {
                 "booking_info": req.booking_info,
             }
