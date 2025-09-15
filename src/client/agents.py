@@ -83,7 +83,8 @@ def update_agent(agent_id, first_message, system_prompt, voice_id, tool_ids=None
             "asr": {
                 "keywords": [
                     "The-gang", "Hokkaido", "The-gang-central", "Gangs", "Nguyễn", "Vũ",
-                    "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Văn", "Đặng", "Bùi"
+                    "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Văn", "Đặng", "Bùi",
+                    "Thị", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đinh", "Trịnh", "Lương", "Đào"
                 ]
             },
             "tts": {
@@ -113,20 +114,32 @@ def update_agent(agent_id, first_message, system_prompt, voice_id, tool_ids=None
     r.raise_for_status()
     return r.json()
 
-def update_loan_agent(agent_id, loan_system_prompt):
+def update_loan_agent(agent_id, loan_system_prompt, tool_ids=None):
     payload = {
         "conversation_config": {
+            "asr": {
+                "keywords": [
+                    "The-gang", "Hokkaido", "The-gang-central", "Gangs", "Nguyễn", "Vũ",
+                    "Trần", "Lê", "Phạm", "Hoàng", "Huỳnh", "Phan", "Văn", "Đặng", "Bùi",
+                    "Thị", "Đỗ", "Hồ", "Ngô", "Dương", "Lý", "Đinh", "Trịnh", "Lương", "Đào"
+                ]
+            },
             "tts": {
+                "voice_id": "BUPPIXeDaJWBz696iXRS",
+                "model_id": "eleven_flash_v2_5",
                 "pronunciation_dictionary_locators": [
                     {
-                        "pronunciation_dictionary_id": "wIaCmFgqdXZfx2jx7YCN",
-                        "version_id": "LGUsbhjlAH2lj79VdyJY"
+                        "pronunciation_dictionary_id": "fmSQDgY3XmOSk59WtNwo",
+                        "version_id": "d5hgc8VoDBupZxFlHkai"
                     }
                 ],
             },
             "agent": {
+                "language": "vi",
                 "prompt": {
                     "prompt": loan_system_prompt,
+                    "llm": "gpt-4o",
+                    "tool_ids": tool_ids if tool_ids else []
                 },
             }
         },
@@ -155,6 +168,19 @@ if __name__ == "__main__":
     #         }"""
     #     })
     # print(url_method1)
+    # url_method1 = generate_talk_to_url(
+    #     "agent_5601k3g7eh6jeddbvr27f492cs72",
+    #     {
+    #         "ten": "Hoàng Anh",
+    #         "so_hop_dong": "A-8-3-8-1-9-1",
+    #         "gioi_tinh": "Nữ",
+    #         "khoan_vay": "20 triệu đồng",
+    #         "tien_thanh_toan": "2 triệu đồng",
+    #         "han_thanh_toan": "30-10-2025",
+    #         "trang_thai": "Chưa thanh toán",
+    #         "prefix": "chị"
+    #     })
+    # print(url_method1)
 
     # print(get_agent("agent_4701k4kq3119enmbvvkwz5cey2rm"))
     # first_message = "Alo, em gọi để đặt bàn tại nhà hàng mình."
@@ -171,25 +197,13 @@ if __name__ == "__main__":
     # Tools booking intake: ["tool_9501k4ht04tzfkdt8qsc8vkz30b3", "tool_4701k4kqda9yfedb6vx44jk9258x"]
     # Intake Agent: agent_3801k4fbtmkvf739gwvz8rgj1nb3
     # Action Agent: agent_4701k4kq3119enmbvvkwz5cey2rm
-    system_prompt = load_prompt_template("booking/system_prompt.md")
+    system_prompt = load_prompt_template("consent_agent/system_prompt.md")
     agent = update_agent(
-        agent_id="agent_3801k4fbtmkvf739gwvz8rgj1nb3",
-        first_message="Chào sếp, tối nay đi đâu chơi không?",
+        agent_id="agent_5401k3n6bqjhe5f8rehcp559f5t7",
+        first_message="Chào anh, em là Thúy Kiều, Kiều xin phép xác nhận một số thông tin nhé.",
         system_prompt=system_prompt,
-        voice_id="BUPPIXeDaJWBz696iXRS",
-        tool_ids=["tool_9501k4ht04tzfkdt8qsc8vkz30b3", "tool_4701k4kqda9yfedb6vx44jk9258x"]
+        voice_id="EUVwmLU6voiyIbWsrs8V",
+        tool_ids=["tool_0701k4a6h312fk380tdrq8t97r0f"]
     )
     # loan_system_prompt = load_prompt_template("system_prompt_v1.md")
     # update_loan_agent(agent_id="agent_5601k3g7eh6jeddbvr27f492cs72", loan_system_prompt=loan_system_prompt)
-
-    # if not agents.get("agents"):
-    #     print("⚠️ No agents found, creating one...")
-    #     agent = create_agent(
-    #         first_message=config.first_message,
-    #         dynamic_variables=config.dynamic_variables,
-    #         system_prompt=config.system_prompt,
-    #         voice_id=config.voice_id
-    #     )
-    #     print(agent)
-    # else:
-    #     print("✅ Agents found:", agents)

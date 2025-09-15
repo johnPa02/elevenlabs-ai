@@ -122,11 +122,11 @@ if __name__ == "__main__":
     #     "prefix": "chị"
     # }
     # print(create_twilio_phone_number(
-    #     phone_number="+14722125928",
-    #     label="John",
-    #     sid="ACc5ff0d6deb4d4542406db6b16cb99ba1",
-    #     token="016adeda7c9891526cf406a7236636ea"))
-    # print(update_phone_number("phnum_2301k4y1w7a2es3811c6wg1t0m0n", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    #     phone_number="+12513602885",
+    #     label="HA",
+    #     sid="ACee65b2c7bd53a58f2a85c55f0e1e2706",
+    #     token="09bf658efdd68e8fe61b764f82586b87"))
+    # print(update_phone_number("phnum_6501k5625bkvf09rdhn31gfycw6h", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     # WARNING: NEVER CALL IN LOCAL !!!
     # print(outbound_call(
     #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",

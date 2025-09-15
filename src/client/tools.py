@@ -92,6 +92,13 @@ if __name__ == "__main__":
     #         }
     #     }
     # }
-    tool = create_tool(name="callHotline")
+    # tool = create_tool(name="callHotline")
     # searchVenue tool id: tool_9501k4ht04tzfkdt8qsc8vkz30b3
-    print(tool)
+    # print(tool)
+    from elevenlabs import ElevenLabs
+
+    client = ElevenLabs(
+        api_key=config.e_api_key,
+    )
+    print(client.conversational_ai.tools.list())
+

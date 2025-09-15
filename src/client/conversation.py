@@ -31,7 +31,7 @@ def format_conversation(transcript):
 # ).transcript))
 
 def get_lastest_conversation():
-    conversations = client.conversational_ai.conversations.list().conversations[1]
+    conversations = client.conversational_ai.conversations.list().conversations[0]
     agent_name = conversations.agent_name
     conversation_id = conversations.conversation_id
     title = conversations.call_summary_title
