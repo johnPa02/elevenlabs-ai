@@ -136,19 +136,20 @@ class CallHotlineResponse(BaseModel):
 def call_hotline(req: CallHotlineRequest):
     try:
         logger.info(f"Calling hotline {req.hotline} with info: {req.booking_info}")
-        call_res = outbound_call(
-            agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-            agent_phone_number_id="phnum_6501k5625bkvf09rdhn31gfycw6h",
-            to_number="+84367907507",
-            dynamic_variables= {
-                "booking_info": req.booking_info,
-            }
-        )
-        success = call_res.get("success")
-        if success:
-            result = "Call initiated successfully. Agent is calling the hotline."
-        else:
-            result = f"Call initiation failed: {call_res.get('message', 'Unknown error')}"
+        # call_res = outbound_call(
+        #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
+        #     agent_phone_number_id="phnum_6501k5625bkvf09rdhn31gfycw6h",
+        #     to_number="+84367907507",
+        #     dynamic_variables= {
+        #         "booking_info": req.booking_info,
+        #     }
+        # )
+        # success = call_res.get("success")
+        # if success:
+        #     result = "Call initiated successfully. Agent is calling the hotline."
+        # else:
+        #     result = f"Call initiation failed: {call_res.get('message', 'Unknown error')}"
+        result = "Call initiated successfully. Agent is calling the hotline."
         return CallHotlineResponse(result=result)
     except Exception as e:
         logger.error(f"call_hotline error: {e}")

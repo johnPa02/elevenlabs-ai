@@ -92,8 +92,8 @@ def update_agent(agent_id, first_message, system_prompt, voice_id, tool_ids=None
                 "model_id": "eleven_flash_v2_5",
                 "pronunciation_dictionary_locators": [
                     {
-                        "pronunciation_dictionary_id": "fmSQDgY3XmOSk59WtNwo",
-                        "version_id": "d5hgc8VoDBupZxFlHkai"
+                        "pronunciation_dictionary_id": "eqBpe9YodDKm4PBtREx5",
+                        "version_id": "lurIxcyW3OpnUK8lpiy6"
                     }
                 ],
                 "optimize_streaming_latency": 3
@@ -129,8 +129,8 @@ def update_loan_agent(agent_id, loan_system_prompt, tool_ids=None):
                 "model_id": "eleven_flash_v2_5",
                 "pronunciation_dictionary_locators": [
                     {
-                        "pronunciation_dictionary_id": "fmSQDgY3XmOSk59WtNwo",
-                        "version_id": "d5hgc8VoDBupZxFlHkai"
+                        "pronunciation_dictionary_id": "zV1iahRG2pfOPQy3sYns",
+                        "version_id": "4RM0smcsIWvr35GF90DF"
                     }
                 ],
             },
@@ -197,13 +197,13 @@ if __name__ == "__main__":
     # Tools booking intake: ["tool_9501k4ht04tzfkdt8qsc8vkz30b3", "tool_4701k4kqda9yfedb6vx44jk9258x"]
     # Intake Agent: agent_3801k4fbtmkvf739gwvz8rgj1nb3
     # Action Agent: agent_4701k4kq3119enmbvvkwz5cey2rm
-    system_prompt = load_prompt_template("consent_agent/system_prompt.md")
+    system_prompt = load_prompt_template("booking/system_prompt.md")
     agent = update_agent(
-        agent_id="agent_5401k3n6bqjhe5f8rehcp559f5t7",
-        first_message="Chào anh, em là Thúy Kiều, Kiều xin phép xác nhận một số thông tin nhé.",
+        agent_id="agent_3801k4fbtmkvf739gwvz8rgj1nb3",
+        first_message="Chào sếp, tối nay đi đâu chơi không?",
         system_prompt=system_prompt,
         voice_id="EUVwmLU6voiyIbWsrs8V",
-        tool_ids=["tool_0701k4a6h312fk380tdrq8t97r0f"]
+        tool_ids=["tool_9501k4ht04tzfkdt8qsc8vkz30b3", "tool_4701k4kqda9yfedb6vx44jk9258x"]
     )
     # loan_system_prompt = load_prompt_template("system_prompt_v1.md")
     # update_loan_agent(agent_id="agent_5601k3g7eh6jeddbvr27f492cs72", loan_system_prompt=loan_system_prompt)

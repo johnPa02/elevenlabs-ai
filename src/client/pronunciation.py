@@ -94,8 +94,8 @@ async def create_pronunciation_dictionary_from_rules():
                 },
                 {
                     "type": "alias",
-                    "string_to_replace": "chị",
-                    "alias": "trị"
+                    "string_to_replace": "lỗi",
+                    "alias": "lõi"
                 },
                 {
                     "type": "alias",
@@ -121,6 +121,21 @@ async def create_pronunciation_dictionary_from_rules():
                     "type": "alias",
                     "string_to_replace": "bảy",
                     "alias": "bãi"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "hai",
+                    "alias": "hayy"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "quận",
+                    "alias": "wuận"
+                },
+                {
+                    "type": "alias",
+                    "string_to_replace": "Quận",
+                    "alias": "wuận"
                 },
                 {
                     "type": "alias",

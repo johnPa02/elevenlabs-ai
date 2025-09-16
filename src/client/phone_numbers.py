@@ -108,7 +108,7 @@ if __name__ == "__main__":
     # print(client.conversational_ai.phone_numbers.delete(
     #     phone_number_id="phnum_3201k4vcpw0xfcebk5vrgerzrncp",
     # ))
-    to_number = config.to_phone_number
+    # to_number = config.to_phone_number
     # agent_id = config.agent_id
     # loan_agent_id = "agent_5601k3g7eh6jeddbvr27f492cs72"
     # dynamic_variables = {
@@ -123,15 +123,15 @@ if __name__ == "__main__":
     # }
     # print(create_twilio_phone_number(
     #     phone_number="+12513602885",
-    #     label="HA",
+    #     label="HAO",
     #     sid="ACee65b2c7bd53a58f2a85c55f0e1e2706",
     #     token="09bf658efdd68e8fe61b764f82586b87"))
-    # print(update_phone_number("phnum_6501k5625bkvf09rdhn31gfycw6h", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    # print(update_phone_number("phnum_4401k5631pbne12811d5fjtsbzk0", "agent_4701k4kq3119enmbvvkwz5cey2rm"))
     # WARNING: NEVER CALL IN LOCAL !!!
     # print(outbound_call(
     #     agent_id="agent_4701k4kq3119enmbvvkwz5cey2rm",
-    #     agent_phone_number_id="phnum_3201k4vcpw0xfcebk5vrgerzrncp",
-    #     to_number=to_number,
+    #     agent_phone_number_id="phnum_4401k5631pbne12811d5fjtsbzk0",
+    #     to_number="+84367907507",
     #     dynamic_variables= {
     #         "booking_info": """{
     #             "date": "2025-09-12",
