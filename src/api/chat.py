@@ -46,7 +46,6 @@ FILLERS = [
 
 @router.post("/v1/chat/completions")
 async def create_chat_completion(request: ChatCompletionRequest) -> StreamingResponse:
-    logger.info("📩 Received chat completion request")
     oai_request = request.model_dump(exclude_none=True)
     if "user_id" in oai_request:
         oai_request["user"] = oai_request.pop("user_id")
