@@ -41,30 +41,32 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
 
     async def event_stream():
         try:
-            # Pick a random filler for this turn
-            filler = random.choice(FILLERS)
+            # Send initial buffer chunk while processing
             initial_chunk = {
                 "id": "chatcmpl-buffer",
                 "object": "chat.completion.chunk",
-                "created": int(os.times().elapsed),
+                "created": 1234567890,
                 "model": request.model,
                 "choices": [{
-                    "delta": {"content": filler},
+                    "delta": {"content": "Let me think about that... "},
                     "index": 0,
                     "finish_reason": None
                 }]
             }
             yield f"data: {json.dumps(initial_chunk)}\n\n"
 
-            # Now forward actual LLM response
-            stream = await oai_client.chat.completions.create(**oai_request)
-            async for chunk in stream:
-                yield f"data: {json.dumps(chunk.model_dump())}\n\n"
+            # Process the actual LLM response
+            chat_completion_coroutine = await oai_client.chat.completions.create(**oai_request)
 
+            async for chunk in chat_completion_coroutine:
+                chunk_dict = chunk.model_dump()
+                yield f"data: {json.dumps(chunk_dict)}\n\n"
             yield "data: [DONE]\n\n"
 
         except Exception as e:
             logging.error("An error occurred: %s", str(e))
-            yield f"data: {json.dumps({'error': 'Internal error occurred'})}\n\n"
+            yield f"data: {json.dumps({'error': 'Internal error occurred!'})}\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
+
+
