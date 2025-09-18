@@ -5,6 +5,9 @@ BASE_PATH = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 
 load_dotenv()
 
+# OpenAI credentials
+openai_api_key = os.getenv("OPENAI_API_KEY")
+
 # Core credentials
 agent_id = os.getenv("AGENT_ID")
 e_api_key = os.getenv("ELEVENLABS_API_KEY")

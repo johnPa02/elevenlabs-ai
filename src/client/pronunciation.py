@@ -125,7 +125,7 @@ async def create_pronunciation_dictionary_from_rules():
                 {
                     "type": "alias",
                     "string_to_replace": "hai",
-                    "alias": "hayy"
+                    "alias": "high"
                 },
                 {
                     "type": "alias",
