@@ -9,6 +9,9 @@ from pydantic import BaseModel
 from typing import List, Optional
 from src import config
 
+# Configure logger for this module
+logger = logging.getLogger(__name__)
+
 router = APIRouter()
 oai_client = AsyncOpenAI(api_key=config.openai_api_key)
 
@@ -27,8 +30,8 @@ class ChatCompletionRequest(BaseModel):
 
 # List of fillers to randomize
 FILLERS = [
-    "Uhm... ",
-    "Ah... ",
+    "Ờ...",
+    "Ah...",
     "Dạ...",
     "Vâng...",
 ]
@@ -36,6 +39,7 @@ FILLERS = [
 @router.post("/v1/chat/completions")
 async def create_chat_completion(request: ChatCompletionRequest) -> StreamingResponse:
     oai_request = request.model_dump(exclude_none=True)
+    logger.info(oai_request)
     if "user_id" in oai_request:
         oai_request["user"] = oai_request.pop("user_id")
 
@@ -43,6 +47,8 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
         try:
             # Randomly select a filler
             filler = random.choice(FILLERS)
+            logger.debug(f"Selected filler: '{filler}'")
+
             # Send initial buffer chunk while processing
             initial_chunk = {
                 "id": "chatcmpl-buffer",
@@ -66,9 +72,8 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
             yield "data: [DONE]\n\n"
 
         except Exception as e:
-            logging.error("An error occurred: %s", str(e))
+            logger.error(f"Error in chat completion: {str(e)}", exc_info=True)
+            logger.error(f"Request that caused error: {json.dumps(oai_request, default=str)}")
             yield f"data: {json.dumps({'error': 'Internal error occurred!'})}\n\n"
 
     return StreamingResponse(event_stream(), media_type="text/event-stream")
-
-
