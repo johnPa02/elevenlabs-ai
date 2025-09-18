@@ -55,7 +55,6 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
         try:
             # Randomly select a filler
             filler = random.choice(FILLERS)
-            logger.debug(f"Selected filler: '{filler}'")
 
             # Send initial filler chunk
             initial_chunk = {
@@ -69,7 +68,9 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
                     "finish_reason": None
                 }]
             }
+            logger.info(f"✅ Initial filler chunk sent: {filler}")
             yield f"data: {json.dumps(initial_chunk)}\n\n"
+
 
             # Call OpenAI
             chat_completion_coroutine = await oai_client.chat.completions.create(**oai_request)
