@@ -194,7 +194,7 @@ if __name__ == "__main__":
     #     })
     # print(url_booking)
 
-# print(get_agent("agent_4701k4kq3119enmbvvkwz5cey2rm"))
+    print(get_agent("agent_3801k4fbtmkvf739gwvz8rgj1nb3"))
     # first_message = "Alo, có phải chị vừa đặt bàn tại nhà hàng The Gangs không ạ?"
     # system_prompt = load_prompt_template("booking/system_prompt_consent.md")
     # agent = create_agent(
@@ -210,13 +210,13 @@ if __name__ == "__main__":
     # Intake Agent: agent_3801k4fbtmkvf739gwvz8rgj1nb3
     # Action Agent: agent_4701k4kq3119enmbvvkwz5cey2rm
     # Consent: agent_3701k58xq6kzf7p973h18xbyy9ga
-    system_prompt = load_prompt_template("booking/system_prompt_consent.md")
-    agent = update_agent(
-        agent_id="agent_3701k58xq6kzf7p973h18xbyy9ga",
-        first_message="Chào anh, em gọi từ nhà hàng The Gangs. Anh vừa đặt bàn phải không ạ?",
-        system_prompt=system_prompt,
-        voice_id="EUVwmLU6voiyIbWsrs8V",
-        tool_ids=[]
-    )
+    # system_prompt = load_prompt_template("booking/system_prompt_consent.md")
+    # agent = update_agent(
+    #     agent_id="agent_3701k58xq6kzf7p973h18xbyy9ga",
+    #     first_message="Chào anh, em gọi từ nhà hàng The Gangs. Anh vừa đặt bàn phải không ạ?",
+    #     system_prompt=system_prompt,
+    #     voice_id="EUVwmLU6voiyIbWsrs8V",
+    #     tool_ids=[]
+    # )
     # loan_system_prompt = load_prompt_template("system_prompt_v1.md")
     # update_loan_agent(agent_id="agent_5601k3g7eh6jeddbvr27f492cs72", loan_system_prompt=loan_system_prompt)

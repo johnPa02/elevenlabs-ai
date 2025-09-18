@@ -27,10 +27,10 @@ class ChatCompletionRequest(BaseModel):
 
 # List of fillers to randomize
 FILLERS = [
-    "Uhm… ",
-    "Ah… ",
-    "Let me think… ",
-    "Yes… ",
+    "Uhm... ",
+    "Ah... ",
+    "Dạ...",
+    "Vâng...",
 ]
 
 @router.post("/v1/chat/completions")
