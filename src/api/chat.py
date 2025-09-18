@@ -41,6 +41,8 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
 
     async def event_stream():
         try:
+            # Randomly select a filler
+            filler = random.choice(FILLERS)
             # Send initial buffer chunk while processing
             initial_chunk = {
                 "id": "chatcmpl-buffer",
@@ -48,7 +50,7 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
                 "created": 1234567890,
                 "model": request.model,
                 "choices": [{
-                    "delta": {"content": "Let me think about that... "},
+                    "delta": {"content": f"{filler} "},
                     "index": 0,
                     "finish_reason": None
                 }]
