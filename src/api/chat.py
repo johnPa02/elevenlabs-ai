@@ -27,6 +27,8 @@ class ChatCompletionRequest(BaseModel):
     max_tokens: Optional[int] = None
     stream: Optional[bool] = False
     user_id: Optional[str] = None
+    tools: Optional[List[dict]] = None  # Add this
+    tool_choice: Optional[str] = None   # Add this
 
 # List of fillers to randomize
 FILLERS = [
