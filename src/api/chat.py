@@ -40,12 +40,12 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
 
     oai_request["stream"] = True
 
-    async def event_stream():
-        tool_buffers = {}  # buffer arguments theo tool_call_id
-        tool_names = {}
+    async def event_stream(oai_client, oai_request, request):
+        tool_buffers = {}  # lưu arguments đang stream
+        tool_names = {}  # map tool_call_id -> name
 
         try:
-            # Gửi filler chunk trước
+            # Random filler để "nói đệm"
             filler = random.choice(FILLERS)
             initial_chunk = {
                 "id": "chatcmpl-buffer",
@@ -60,50 +60,50 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
             }
             yield f"data: {json.dumps(initial_chunk)}\n\n"
 
-            # Stream từ OpenAI
+            # Gọi OpenAI API (stream)
             stream = await oai_client.chat.completions.create(**oai_request)
 
             async for chunk in stream:
                 chunk_dict = chunk.model_dump()
-                choices = chunk_dict.get("choices", [])
 
-                for choice in choices:
+                for choice in chunk_dict.get("choices", []):
                     delta = choice.get("delta", {})
 
-                    # Handle assistant content (normal text)
-                    if "content" in delta:
+                    # --- Xử lý content bình thường ---
+                    if "content" in delta and delta["content"] is not None:
                         logger.info(f"💬 Content delta: {delta['content']}")
-                        yield f"data: {json.dumps(chunk_dict)}\n\n"
 
-                    # Handle tool calls (stream từng token)
-                    if "tool_calls" in delta:
-                        for tc in delta["tool_calls"]:
-                            tc_id = tc.get("id")
-                            fn = tc.get("function", {})
+                    # --- Xử lý tool calls ---
+                    tool_calls = delta.get("tool_calls") or []
+                    for tc in tool_calls:
+                        tc_id = tc.get("id")
+                        fn = tc.get("function", {})
 
-                            if fn.get("name"):
-                                tool_names[tc_id] = fn["name"]
-                                logger.info(f"🔧 Tool name: {fn['name']} (id={tc_id})")
+                        if fn.get("name"):
+                            tool_names[tc_id] = fn["name"]
+                            logger.info(f"🔧 Tool name: {fn['name']} (id={tc_id})")
 
-                            if "arguments" in fn:
-                                tool_buffers.setdefault(tc_id, "")
-                                tool_buffers[tc_id] += fn["arguments"]
-                                logger.info(f"🧩 Partial args for {tc_id}: {fn['arguments']}")
+                        if "arguments" in fn:
+                            tool_buffers.setdefault(tc_id, "")
+                            tool_buffers[tc_id] += fn["arguments"]
+                            logger.info(f"🧩 Partial args for {tc_id}: {fn['arguments']}")
 
-                            yield f"data: {json.dumps(chunk_dict)}\n\n"
+                    # Yield chunk ra ngoài
+                    yield f"data: {json.dumps(chunk_dict)}\n\n"
 
-                    # Khi LLM báo finish vì tool_calls
+                    # --- Khi model báo finish tool_calls ---
                     if choice.get("finish_reason") == "tool_calls":
                         for tc_id, args in tool_buffers.items():
                             try:
                                 parsed = json.loads(args)
-                                logger.info(f"✅ Final tool args for {tool_names.get(tc_id)}: {parsed}")
+                                tool_name = tool_names.get(tc_id, "unknown")
+                                logger.info(f"✅ Final tool args for {tool_name} ({tc_id}): {parsed}")
                             except Exception as e:
-                                logger.error(f"❌ Failed to parse args for {tc_id}: {args} | {e}")
+                                logger.error(f"❌ Failed to parse args {args}: {e}")
 
-                # Gửi chunk cho client
-                yield f"data: {json.dumps(chunk_dict)}\n\n"
+                # (hết vòng for choice)
 
+            # Kết thúc stream
             yield "data: [DONE]\n\n"
 
         except Exception as e:
