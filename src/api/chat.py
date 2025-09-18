@@ -1,6 +1,8 @@
 import json
 import os
 import random
+import time
+
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from openai import AsyncOpenAI
@@ -45,6 +47,8 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
     if "user_id" in oai_request:
         oai_request["user"] = oai_request.pop("user_id")
 
+    oai_request["stream"] = True
+
     async def event_stream():
         try:
             # Randomly select a filler
@@ -55,7 +59,7 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
             initial_chunk = {
                 "id": "chatcmpl-buffer",
                 "object": "chat.completion.chunk",
-                "created": 1234567890,
+                "created": int(time.time()),
                 "model": request.model,
                 "choices": [{
                     "delta": {"content": f"{filler} "},
