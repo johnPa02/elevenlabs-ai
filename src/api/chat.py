@@ -57,7 +57,7 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
             yield f"data: {json.dumps(initial_chunk)}\n\n"
 
             # Now forward actual LLM response
-            stream = await oai_client.chat.completions.create(**oai_request, stream=True)
+            stream = await oai_client.chat.completions.create(**oai_request)
             async for chunk in stream:
                 yield f"data: {json.dumps(chunk.model_dump())}\n\n"
 
