@@ -8,7 +8,7 @@ from fastapi.responses import StreamingResponse
 from openai import AsyncOpenAI
 import logging
 from pydantic import BaseModel
-from typing import List, Optional
+from typing import List, Optional, Dict, Any
 from src import config
 
 # Configure logger for this module
