@@ -17,10 +17,12 @@ logger = logging.getLogger(__name__)
 router = APIRouter()
 oai_client = AsyncOpenAI(api_key=config.openai_api_key)
 
-# Schema
 class Message(BaseModel):
-    role: str
-    content: str
+    role: str  # "user", "assistant", "tool", "system"
+    content: Optional[str] = None  # text content
+    tool_calls: Optional[List[Dict[str, Any]]] = None  # khi assistant gọi function
+    tool_call_id: Optional[str] = None  # khi tool trả về kết quả
+    name: Optional[str] = None  # tên tool (trong message role=tool)
 
 class ChatCompletionRequest(BaseModel):
     messages: List[Message]
@@ -29,8 +31,8 @@ class ChatCompletionRequest(BaseModel):
     max_tokens: Optional[int] = None
     stream: Optional[bool] = False
     user_id: Optional[str] = None
-    tools: Optional[List[dict]] = None  # Add this
-    tool_choice: Optional[str] = None   # Add this
+    tools: Optional[List[dict]] = None
+    tool_choice: Optional[str] = None
 
 # List of fillers to randomize
 FILLERS = [
