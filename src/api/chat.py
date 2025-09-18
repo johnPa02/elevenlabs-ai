@@ -74,6 +74,19 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
 
             async for chunk in chat_completion_coroutine:
                 chunk_dict = chunk.model_dump()
+                # Debug log
+                try:
+                    for choice in chunk_dict.get("choices", []):
+                        delta = choice.get("delta", {})
+                        if "tool_calls" in delta:
+                            logger.info(f"🔧 Tool call delta: {json.dumps(delta['tool_calls'], ensure_ascii=False)}")
+                        if "content" in delta:
+                            logger.info(f"💬 Assistant delta: {delta['content']}")
+                        if choice.get("finish_reason"):
+                            logger.info(f"🏁 Finish reason: {choice['finish_reason']}")
+                except Exception as log_err:
+                    logger.warning(f"⚠️ Failed to parse chunk: {chunk_dict} ({log_err})")
+
                 yield f"data: {json.dumps(chunk_dict)}\n\n"
             yield "data: [DONE]\n\n"
 
