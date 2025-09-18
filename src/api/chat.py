@@ -1,14 +1,17 @@
 import json
-import time
+import os
 import random
-import logging
+import time
+
 from fastapi import APIRouter
 from fastapi.responses import StreamingResponse
 from openai import AsyncOpenAI
+import logging
 from pydantic import BaseModel
 from typing import List, Optional
 from src import config
 
+# Configure logger for this module
 logger = logging.getLogger(__name__)
 
 router = APIRouter()
@@ -26,27 +29,33 @@ class ChatCompletionRequest(BaseModel):
     max_tokens: Optional[int] = None
     stream: Optional[bool] = False
     user_id: Optional[str] = None
-    tools: Optional[List[dict]] = None
-    tool_choice: Optional[str] = None
+    tools: Optional[List[dict]] = None  # Add this
+    tool_choice: Optional[str] = None   # Add this
 
-# Fillers
-FILLERS = ["Ờ...", "Ah...", "Dạ...", "Vâng..."]
+# List of fillers to randomize
+FILLERS = [
+    "Ờ...",
+    "Ah...",
+    "Dạ...",
+    "Vâng...",
+]
 
 @router.post("/v1/chat/completions")
 async def create_chat_completion(request: ChatCompletionRequest) -> StreamingResponse:
     oai_request = request.model_dump(exclude_none=True)
+    logger.info(oai_request)
     if "user_id" in oai_request:
         oai_request["user"] = oai_request.pop("user_id")
 
     oai_request["stream"] = True
 
-    async def event_stream(oai_client, oai_request, request):
-        tool_buffers = {}  # lưu arguments đang stream
-        tool_names = {}  # map tool_call_id -> name
-
+    async def event_stream():
         try:
-            # Random filler để "nói đệm"
+            # Randomly select a filler
             filler = random.choice(FILLERS)
+            logger.debug(f"Selected filler: '{filler}'")
+
+            # Send initial filler chunk
             initial_chunk = {
                 "id": "chatcmpl-buffer",
                 "object": "chat.completion.chunk",
@@ -60,50 +69,70 @@ async def create_chat_completion(request: ChatCompletionRequest) -> StreamingRes
             }
             yield f"data: {json.dumps(initial_chunk)}\n\n"
 
-            # Gọi OpenAI API (stream)
-            stream = await oai_client.chat.completions.create(**oai_request)
+            # Call OpenAI
+            chat_completion_coroutine = await oai_client.chat.completions.create(**oai_request)
 
-            async for chunk in stream:
+            tool_call_buffers = {}
+
+            async for chunk in chat_completion_coroutine:
                 chunk_dict = chunk.model_dump()
 
                 for choice in chunk_dict.get("choices", []):
                     delta = choice.get("delta", {})
 
-                    # --- Xử lý content bình thường ---
+                    # Content -> stream ngay
                     if "content" in delta and delta["content"] is not None:
-                        logger.info(f"💬 Content delta: {delta['content']}")
+                        logger.info(f"💬 Assistant delta: {delta['content']}")
+                        yield f"data: {json.dumps(chunk_dict)}\n\n"
 
-                    # --- Xử lý tool calls ---
-                    tool_calls = delta.get("tool_calls") or []
-                    for tc in tool_calls:
-                        tc_id = tc.get("id")
-                        fn = tc.get("function", {})
+                    # Tool calls -> chỉ buffer, không stream ra
+                    if "tool_calls" in delta and delta["tool_calls"] is not None:
+                        for call in delta["tool_calls"]:
+                            idx = call["index"]
+                            buf = tool_call_buffers.setdefault(idx, {"arguments": ""})
+                            fn = call.get("function", {})
 
-                        if fn.get("name"):
-                            tool_names[tc_id] = fn["name"]
-                            logger.info(f"🔧 Tool name: {fn['name']} (id={tc_id})")
+                            if call.get("id"):
+                                buf["id"] = call["id"]
+                            if fn.get("name"):
+                                buf["name"] = fn["name"]
+                            if fn.get("arguments"):
+                                buf["arguments"] += fn["arguments"]
 
-                        if "arguments" in fn:
-                            tool_buffers.setdefault(tc_id, "")
-                            tool_buffers[tc_id] += fn["arguments"]
-                            logger.info(f"🧩 Partial args for {tc_id}: {fn['arguments']}")
-
-                    # Yield chunk ra ngoài
-                    yield f"data: {json.dumps(chunk_dict)}\n\n"
-
-                    # --- Khi model báo finish tool_calls ---
+                    # Finish reason
                     if choice.get("finish_reason") == "tool_calls":
-                        for tc_id, args in tool_buffers.items():
+                        for idx, buf in tool_call_buffers.items():
                             try:
-                                parsed = json.loads(args)
-                                tool_name = tool_names.get(tc_id, "unknown")
-                                logger.info(f"✅ Final tool args for {tool_name} ({tc_id}): {parsed}")
+                                args = json.loads(buf["arguments"])
                             except Exception as e:
-                                logger.error(f"❌ Failed to parse args {args}: {e}")
+                                logger.error(f"❌ Failed to parse tool args: {buf['arguments']} ({e})")
+                                args = buf["arguments"]
 
-                # (hết vòng for choice)
+                            # Emit 1 chunk hoàn chỉnh duy nhất cho tool_call
+                            tool_chunk = {
+                                "id": buf.get("id", f"tool_{idx}"),
+                                "object": "chat.completion.chunk",
+                                "created": int(time.time()),
+                                "model": request.model,
+                                "choices": [{
+                                    "delta": {
+                                        "tool_calls": [{
+                                            "index": idx,
+                                            "id": buf.get("id", f"tool_{idx}"),
+                                            "type": "function",
+                                            "function": {
+                                                "name": buf.get("name"),
+                                                "arguments": json.dumps(args, ensure_ascii=False)
+                                            }
+                                        }]
+                                    },
+                                    "index": 0,
+                                    "finish_reason": "tool_calls"
+                                }]
+                            }
+                            logger.info(f"✅ Final tool call emitted: {tool_chunk}")
+                            yield f"data: {json.dumps(tool_chunk)}\n\n"
 
-            # Kết thúc stream
             yield "data: [DONE]\n\n"
 
         except Exception as e:
