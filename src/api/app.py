@@ -38,7 +38,7 @@ async def log_requests(request: Request, call_next):
             "client": request.client.host if request.client else None,
             "process_ms": round(process_ms, 2),
         }
-        logger.info("📩 HTTP request", extra=extra)
+        logger.info("HTTP request", extra=extra)
 
 
 @app.get("/health")
