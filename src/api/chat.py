@@ -36,20 +36,19 @@ class ChatCompletionRequest(BaseModel):
 
 # List of fillers to randomize
 FILLERS = [
-    "Ờ...",
-    "Ah...",
+    "Ơ...",
+    "À...",
     "Dạ...",
     "Vâng...",
+    "Ừm...",
+    "OK...",
 ]
 
 @router.post("/v1/chat/completions")
 async def create_chat_completion(request: ChatCompletionRequest) -> StreamingResponse:
     oai_request = request.model_dump(exclude_none=True)
-    logger.info(oai_request)
     if "user_id" in oai_request:
         oai_request["user"] = oai_request.pop("user_id")
-
-    oai_request["stream"] = True
 
     async def event_stream():
         try:
